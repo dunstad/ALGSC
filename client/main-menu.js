@@ -161,7 +161,7 @@ let multiplayerMenu = blessed.form({
   left: 'center',
   top: 'center',
   width: '50%',
-  height: 6,
+  height: 3,
   style: menuStyle,
   border: {
     type: 'line'
@@ -175,7 +175,7 @@ var ipAddressInput = blessed.textbox({
   inputOnFocus: true,
   style: {...menuStyle},
   width: '50%',
-  height: 3,
+  height: 1,
   left: 9,
   top: 0,
   name: 'ipAddressInput',
