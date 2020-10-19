@@ -4,6 +4,8 @@ var blessed = require('neo-blessed');
 // Create a screen object.
 var screen = blessed.screen();
 
+let currentMenu;
+
 var image = blessed.image({
   parent: screen,
   file: './city.png',
@@ -44,6 +46,14 @@ function quit() {
   return process.exit(0);
 }
 
+function show(menu) {
+  if (currentMenu) {screen.remove(currentMenu);}
+  screen.append(menu);
+  menu.focus();
+  currentMenu = menu;
+  screen.render();
+}
+
 let mainMenuItems = [
   {
     name: 'Single Player',
@@ -55,12 +65,7 @@ let mainMenuItems = [
   },
   {
     name: 'Settings',
-    action: ()=>{
-      screen.remove(mainMenu);
-      screen.append(form);
-      form.focus();
-      screen.render();
-    },
+    action: ()=>{show(form);},
   },
   {
     name: 'Quit',
@@ -82,7 +87,6 @@ let mainMenu = blessed.list({
   },
   style: menuStyle,
 });
-
 mainMenu.on('select', (item, index)=>{mainMenuItems[index].action();});
 
 // Quit on Escape, q, or Control-C.
@@ -105,17 +109,6 @@ let form = blessed.form({
     ch: ' '
   }
 });
-form.key(backKeys, ()=>{
-  screen.remove(form);
-  screen.append(mainMenu);
-  mainMenu.focus();
-  screen.render();
-});
+form.key(backKeys, ()=>{show(mainMenu);});
 
-screen.append(mainMenu);
-
-// Focus our element.
-mainMenu.focus();
-
-// Render the screen.
-screen.render();
+show(mainMenu);
