@@ -189,5 +189,22 @@ var ipAddressInput = blessed.textbox({
   name: 'ipAddressInput',
 });
 highlightOnFocus(ipAddressInput);
+ipAddressInput.key(['enter'], ()=>{
+  show(connectingMessage);
+  // actually connect
+});
+
+let connectingMessage = blessed.box({
+  style: menuStyle,
+  border: 'line',
+  width: 'shrink',
+  height: 'shrink',
+  left: 'center',
+  top: 'center',
+  padding: 1,
+  name: 'connectingMessage',
+  content: ' Connecting... ',
+});
+connectingMessage.key(backKeys, ()=>{show(mainMenu);});
 
 show(mainMenu);
