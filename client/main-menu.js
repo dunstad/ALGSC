@@ -4,7 +4,7 @@ var blessed = require('neo-blessed');
 // Create a screen object.
 var screen = blessed.screen();
 
-let menuItems = [
+let mainMenuItems = [
   {
     name: 'Single Player',
     action: ()=>{},
@@ -24,13 +24,12 @@ let menuItems = [
 ];
 
 // Create a box perfectly centered horizontally and vertically.
-var list = blessed.list({
+let mainMenu = blessed.list({
   top: 'center',
   left: 'center',
   width: '50%',
   height: 6,
-  content: 'Hello {bold}world{/bold}!',
-  items: menuItems.map((o)=>{return `{center}${o.name}{/center}`;}),
+  items: mainMenuItems.map((o)=>{return `{center}${o.name}{/center}`;}),
   keys: true,
   tags: true,
   border: {
@@ -48,7 +47,7 @@ var list = blessed.list({
   }
 });
 
-list.on('select', (item, index)=>{menuItems[index].action();});
+mainMenu.on('select', (item, index)=>{mainMenuItems[index].action();});
 
 var image = blessed.image({
   file: './city.png',
@@ -76,7 +75,7 @@ var image = blessed.image({
 
 // Append our image to the screen.
 screen.append(image);
-screen.append(list);
+screen.append(mainMenu);
 
 // Quit on Escape, q, or Control-C.
 screen.key(['escape', 'q', 'C-c'], function(ch, key) {
@@ -84,7 +83,7 @@ screen.key(['escape', 'q', 'C-c'], function(ch, key) {
 });
 
 // Focus our element.
-list.focus();
+mainMenu.focus();
 
 // Render the screen.
 screen.render();
