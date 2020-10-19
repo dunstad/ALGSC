@@ -63,7 +63,7 @@ let mainMenuItems = [
   },
   {
     name: 'Multiplayer',
-    action: ()=>{},
+    action: ()=>{show(multiplayerMenu);},
   },
   {
     name: 'Settings',
@@ -153,6 +153,39 @@ progress.on('focus', ()=>{
 });
 progress.on('blur', ()=>{
   progress.style.bar.fg = menuStyle.fg;
+  screen.render();
+});
+
+let multiplayerMenu = blessed.form({
+  keys: true,
+  left: 'center',
+  top: 'center',
+  width: '50%',
+  height: 6,
+  style: menuStyle,
+  border: {
+    type: 'line'
+  },
+  content: 'Connect: ',
+});
+multiplayerMenu.key(backKeys, ()=>{show(mainMenu);});
+
+var ipAddressInput = blessed.textbox({
+  parent: multiplayerMenu,
+  inputOnFocus: true,
+  style: {...menuStyle},
+  width: '50%',
+  height: 3,
+  left: 9,
+  top: 0,
+  name: 'ipAddressInput',
+});
+ipAddressInput.on('focus', ()=>{
+  ipAddressInput.style.fg = menuStyle.selected.fg;
+  screen.render();
+});
+ipAddressInput.on('blur', ()=>{
+  ipAddressInput.style.fg = menuStyle.fg;
   screen.render();
 });
 
