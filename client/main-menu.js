@@ -5,6 +5,7 @@ var blessed = require('neo-blessed');
 var screen = blessed.screen();
 
 var image = blessed.image({
+  parent: screen,
   file: './city.png',
   top: 'center',
   left: 'center',
@@ -28,14 +29,20 @@ var image = blessed.image({
   }
 });
 
-// Append our image to the screen.
-screen.append(image);
+let menuStyle = {
+  fg: 'cyan',
+    bg: 'navy',
+    border: {
+      fg: 'cyan'
+    },
+    selected: {
+      fg: 'yellow',
+    },
+};
 
-// Quit on Escape, q, or Control-C.
-screen.key(['escape', 'q', 'C-c'], function(ch, key) {
+function quit() {
   return process.exit(0);
-});
-
+}
 
 let mainMenuItems = [
   {
@@ -48,11 +55,16 @@ let mainMenuItems = [
   },
   {
     name: 'Settings',
-    action: ()=>{},
+    action: ()=>{
+      screen.remove(mainMenu);
+      screen.append(form);
+      form.focus();
+      screen.render();
+    },
   },
   {
     name: 'Quit',
-    action: ()=>{return process.exit(0);},
+    action: quit,
   },
 ];
 
@@ -68,19 +80,37 @@ let mainMenu = blessed.list({
   border: {
     type: 'line'
   },
-  style: {
-    fg: 'cyan',
-    bg: 'navy',
-    border: {
-      fg: 'cyan'
-    },
-    selected: {
-      fg: 'yellow',
-    }
-  }
+  style: menuStyle,
 });
 
 mainMenu.on('select', (item, index)=>{mainMenuItems[index].action();});
+
+// Quit on Escape, q, or Control-C.
+let backKeys = ['escape', 'q', 'C-c'];
+mainMenu.key(backKeys, quit);
+
+let form = blessed.form({
+  keys: true,
+  left: 'center',
+  top: 'center',
+  width: '50%',
+  height: 6,
+  style: menuStyle,
+  border: {
+    type: 'line'
+  },
+  content: 'foobar',
+  scrollable: true,
+  scrollbar: {
+    ch: ' '
+  }
+});
+form.key(backKeys, ()=>{
+  screen.remove(form);
+  screen.append(mainMenu);
+  mainMenu.focus();
+  screen.render();
+});
 
 screen.append(mainMenu);
 
