@@ -1,4 +1,3 @@
-// var blessed = require('@blessed/neo-blessed');
 var blessed = require('neo-blessed');
 
 // Create a screen object.
@@ -40,6 +39,9 @@ let menuStyle = {
     selected: {
       fg: 'yellow',
     },
+    keyable: {
+      fg: 'yellow',
+    }
 };
 
 function quit() {
@@ -65,7 +67,7 @@ let mainMenuItems = [
   },
   {
     name: 'Settings',
-    action: ()=>{show(form);},
+    action: ()=>{show(settingsMenu);},
   },
   {
     name: 'Quit',
@@ -93,7 +95,7 @@ mainMenu.on('select', (item, index)=>{mainMenuItems[index].action();});
 let backKeys = ['escape', 'q', 'C-c'];
 mainMenu.key(backKeys, quit);
 
-let form = blessed.form({
+let settingsMenu = blessed.form({
   keys: true,
   left: 'center',
   top: 'center',
@@ -103,12 +105,56 @@ let form = blessed.form({
   border: {
     type: 'line'
   },
-  content: 'foobar',
-  scrollable: true,
-  scrollbar: {
-    ch: ' '
-  }
+  content: 'check\nslider ',
 });
-form.key(backKeys, ()=>{show(mainMenu);});
+settingsMenu.key(backKeys, ()=>{show(mainMenu);});
+
+
+var check = blessed.checkbox({
+  parent: settingsMenu,
+  keys: true,
+  style: {...menuStyle},
+  width: '50%',
+  height: 1,
+  left: 7,
+  top: 0,
+  name: 'check',
+});
+check.key(backKeys, ()=>{show(mainMenu);});
+check.on('focus', ()=>{
+  check.style.fg = menuStyle.selected.fg;
+  screen.render();
+});
+check.on('blur', ()=>{
+  check.style.fg = menuStyle.fg;
+  screen.render();
+});
+
+var progress = blessed.progressbar({
+  parent: settingsMenu,
+  keys: true,
+  style: {
+    bar: {
+      fg: 'cyan',
+      bg: 'navy',
+    }
+  },
+  ch: ':',
+  width: '50%',
+  height: 1,
+  left: 7,
+  top: 1,
+  filled: 50,
+});
+progress.key(backKeys, ()=>{show(mainMenu);});
+progress.on('focus', ()=>{
+  progress.style.bar.fg = menuStyle.selected.fg;
+  screen.render();
+});
+progress.on('blur', ()=>{
+  progress.style.bar.fg = menuStyle.fg;
+  screen.render();
+});
+
 
 show(mainMenu);
