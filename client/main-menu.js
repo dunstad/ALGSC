@@ -1,4 +1,5 @@
 var blessed = require('neo-blessed');
+const { program } = require('neo-blessed');
 
 // Create a screen object.
 var screen = blessed.screen();
@@ -54,6 +55,27 @@ function show(menu) {
   menu.focus();
   currentMenu = menu;
   screen.render();
+}
+
+function highlightOnFocus(input) {
+  input.on('focus', ()=>{
+    if (input.style.bar) {
+      input.style.bar.fg = menuStyle.selected.fg;
+    }
+    else {
+      input.style.fg = menuStyle.selected.fg;
+    }
+    screen.render();
+  });
+  input.on('blur', ()=>{
+    if (input.style.bar) {
+      input.style.bar.fg = menuStyle.fg;
+    }
+    else {
+      input.style.fg = menuStyle.fg;
+    }
+    screen.render();
+  });
 }
 
 let mainMenuItems = [
@@ -121,14 +143,7 @@ var check = blessed.checkbox({
   name: 'check',
 });
 check.key(backKeys, ()=>{show(mainMenu);});
-check.on('focus', ()=>{
-  check.style.fg = menuStyle.selected.fg;
-  screen.render();
-});
-check.on('blur', ()=>{
-  check.style.fg = menuStyle.fg;
-  screen.render();
-});
+highlightOnFocus(check);
 
 var progress = blessed.progressbar({
   parent: settingsMenu,
@@ -147,14 +162,7 @@ var progress = blessed.progressbar({
   filled: 50,
 });
 progress.key(backKeys, ()=>{show(mainMenu);});
-progress.on('focus', ()=>{
-  progress.style.bar.fg = menuStyle.selected.fg;
-  screen.render();
-});
-progress.on('blur', ()=>{
-  progress.style.bar.fg = menuStyle.fg;
-  screen.render();
-});
+highlightOnFocus(progress);
 
 let multiplayerMenu = blessed.form({
   keys: true,
@@ -180,14 +188,6 @@ var ipAddressInput = blessed.textbox({
   top: 0,
   name: 'ipAddressInput',
 });
-ipAddressInput.on('focus', ()=>{
-  ipAddressInput.style.fg = menuStyle.selected.fg;
-  screen.render();
-});
-ipAddressInput.on('blur', ()=>{
-  ipAddressInput.style.fg = menuStyle.fg;
-  screen.render();
-});
-
+highlightOnFocus(ipAddressInput);
 
 show(mainMenu);
