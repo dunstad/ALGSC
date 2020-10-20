@@ -1,5 +1,5 @@
 var blessed = require('neo-blessed');
-const { program } = require('neo-blessed');
+const Colyseus = require("colyseus.js")
 
 // Create a screen object.
 var screen = blessed.screen();
@@ -191,7 +191,15 @@ var ipAddressInput = blessed.textbox({
 highlightOnFocus(ipAddressInput);
 ipAddressInput.key(['enter'], ()=>{
   show(connectingMessage);
-  // actually connect
+  
+  let client = new Colyseus.Client('ws://localhost:2567');
+  client.joinOrCreate('my_room').then((room)=>{
+      console.log(room.sessionId, "joined", room.name);
+      show(connectedMessage);
+  }).catch(e => {
+      console.log("JOIN ERROR", e);
+  });
+
 });
 
 let connectingMessage = blessed.box({
@@ -205,6 +213,19 @@ let connectingMessage = blessed.box({
   name: 'connectingMessage',
   content: ' Connecting... ',
 });
-connectingMessage.key(backKeys, ()=>{show(mainMenu);});
+connectingMessage.key(backKeys, ()=>{show(multiplayerMenu);});
+
+let connectedMessage = blessed.box({
+  style: menuStyle,
+  border: 'line',
+  width: 'shrink',
+  height: 'shrink',
+  left: 'center',
+  top: 'center',
+  padding: 1,
+  name: 'connectedMessage',
+  content: ' Connected! ',
+});
+connectedMessage.key(backKeys, ()=>{show(multiplayerMenu);});
 
 show(mainMenu);
