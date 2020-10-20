@@ -2,6 +2,7 @@
 
 #### server
 * configurable port
+  * document how in the readme
 
 #### client
 * save settings to json
