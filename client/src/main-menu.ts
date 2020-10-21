@@ -1,18 +1,17 @@
 var blessed = require('neo-blessed');
 const Colyseus = require("colyseus.js")
 
-// Create a screen object.
-var screen = blessed.screen();
+var blessedScreen = blessed.screen();
 
 let currentMenu;
 
 var image = blessed.image({
-  parent: screen,
-  file: './city.png',
+  parent: blessedScreen,
+  file: './assets/city.png',
   top: 'center',
   left: 'center',
-  height: Math.min(screen.height, 40),
-  width: Math.min(screen.width, 83 * 2),
+  height: Math.min(blessedScreen.height, 40),
+  width: Math.min(blessedScreen.width, 83 * 2),
   // height: 13,
   // width: 80,
   tags: true,
@@ -50,11 +49,11 @@ function quit() {
 }
 
 function show(menu) {
-  if (currentMenu) {screen.remove(currentMenu);}
-  screen.append(menu);
+  if (currentMenu) {blessedScreen.remove(currentMenu);}
+  blessedScreen.append(menu);
   menu.focus();
   currentMenu = menu;
-  screen.render();
+  blessedScreen.render();
 }
 
 function highlightOnFocus(input) {
@@ -65,7 +64,7 @@ function highlightOnFocus(input) {
     else {
       input.style.fg = menuStyle.selected.fg;
     }
-    screen.render();
+    blessedScreen.render();
   });
   input.on('blur', ()=>{
     if (input.style.bar) {
@@ -74,7 +73,7 @@ function highlightOnFocus(input) {
     else {
       input.style.fg = menuStyle.fg;
     }
-    screen.render();
+    blessedScreen.render();
   });
 }
 
