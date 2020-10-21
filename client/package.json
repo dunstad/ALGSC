@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/blessed": "^0.1.17",
     "@types/node": "^14.14.0",
     "colyseus.js": "^0.13.2",
     "neo-blessed": "^0.2.0",

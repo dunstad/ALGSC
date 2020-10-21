@@ -1,7 +1,8 @@
 var blessed = require('neo-blessed');
-const Colyseus = require("colyseus.js")
+import { BlessedProgram, Widgets } from "blessed";
+import Colyseus = require("colyseus.js");
 
-var blessedScreen = blessed.screen();
+var blessedScreen: Widgets.Screen = blessed.screen();
 
 let currentMenu;
 
@@ -10,10 +11,8 @@ var image = blessed.image({
   file: './assets/city.png',
   top: 'center',
   left: 'center',
-  height: Math.min(blessedScreen.height, 40),
-  width: Math.min(blessedScreen.width, 83 * 2),
-  // height: 13,
-  // width: 80,
+  height: Math.min(blessedScreen.height as number, 40),
+  width: Math.min(blessedScreen.width as number, 83 * 2),
   tags: true,
   border: {
     type: 'line'
@@ -191,12 +190,12 @@ highlightOnFocus(ipAddressInput);
 ipAddressInput.key(['enter'], ()=>{
   show(connectingMessage);
   
-  let client = new Colyseus.Client('ws://localhost:2567');
+  let client: Colyseus.Client = new Colyseus.Client('ws://localhost:2567');
   client.joinOrCreate('my_room').then((room)=>{
       console.log(room.sessionId, "joined", room.name);
       show(connectedMessage);
-  }).catch(e => {
-      console.log("JOIN ERROR", e);
+  }).catch(error => {
+      console.log("JOIN ERROR", error);
   });
 
 });

@@ -1,3 +1,4 @@
+"use strict";
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -9,6 +10,7 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 var blessed = require('neo-blessed');
 var Colyseus = require("colyseus.js");
 var blessedScreen = blessed.screen();
@@ -20,8 +22,6 @@ var image = blessed.image({
     left: 'center',
     height: Math.min(blessedScreen.height, 40),
     width: Math.min(blessedScreen.width, 83 * 2),
-    // height: 13,
-    // width: 80,
     tags: true,
     border: {
         type: 'line'
@@ -191,8 +191,8 @@ ipAddressInput.key(['enter'], function () {
     client.joinOrCreate('my_room').then(function (room) {
         console.log(room.sessionId, "joined", room.name);
         show(connectedMessage);
-    }).catch(function (e) {
-        console.log("JOIN ERROR", e);
+    }).catch(function (error) {
+        console.log("JOIN ERROR", error);
     });
 });
 var connectingMessage = blessed.box({
