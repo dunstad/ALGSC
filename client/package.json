@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "npx tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "now": "tsc && node built/main-menu.js"
+    "now": "npx tsc && node built/main-menu.js"
   },
   "author": "",
   "license": "ISC",
