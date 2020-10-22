@@ -1,4 +1,4 @@
-https://img.shields.io/github/workflow/status/dunstad/ALGSC/Node.js%20CI/develop
+![build status](https://img.shields.io/github/workflow/status/dunstad/ALGSC/Node.js%20CI/develop)
 
 ## What is this?
 
