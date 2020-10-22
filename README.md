@@ -1,3 +1,5 @@
+https://img.shields.io/github/workflow/status/dunstad/ALGSC/Node.js%20CI/develop
+
 ## What is this?
 
 It will probably, eventually be a game.
