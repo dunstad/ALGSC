@@ -1,12 +1,12 @@
 var blessed = require('neo-blessed');
-import { BlessedProgram, Widgets } from "blessed";
+import { BlessedProgram, widget, Widgets } from "blessed";
 import Colyseus = require("colyseus.js");
 
-var blessedScreen: Widgets.Screen = blessed.screen();
+let blessedScreen: Widgets.Screen = blessed.screen();
 
-let currentMenu;
+let currentMenu: Widgets.BoxElement;
 
-var image = blessed.image({
+let image: Widgets.ImageElement = blessed.image({
   parent: blessedScreen,
   file: './assets/city.png',
   top: 'center',
@@ -47,7 +47,7 @@ function quit() {
   return process.exit(0);
 }
 
-function show(menu) {
+function show(menu: Widgets.BoxElement) {
   if (currentMenu) {blessedScreen.remove(currentMenu);}
   blessedScreen.append(menu);
   menu.focus();
@@ -55,7 +55,7 @@ function show(menu) {
   blessedScreen.render();
 }
 
-function highlightOnFocus(input) {
+function highlightOnFocus(input: Widgets.InputElement) {
   input.on('focus', ()=>{
     if (input.style.bar) {
       input.style.bar.fg = menuStyle.selected.fg;
@@ -76,7 +76,14 @@ function highlightOnFocus(input) {
   });
 }
 
-let mainMenuItems = [
+interface MenuItem {
+  name: string,
+  action(): void,
+}
+
+type MenuItems = MenuItem[];
+
+let mainMenuItems: MenuItems = [
   {
     name: 'Single Player',
     action: ()=>{},
@@ -96,7 +103,7 @@ let mainMenuItems = [
 ];
 
 // Create a box perfectly centered horizontally and vertically.
-let mainMenu = blessed.list({
+let mainMenu: Widgets.ListElement = blessed.list({
   top: 'center',
   left: 'center',
   width: '50%',
@@ -109,13 +116,13 @@ let mainMenu = blessed.list({
   },
   style: menuStyle,
 });
-mainMenu.on('select', (item, index)=>{mainMenuItems[index].action();});
+mainMenu.on('select', (item, index: number)=>{mainMenuItems[index].action();});
 
 // Quit on Escape, q, or Control-C.
-let backKeys = ['escape', 'q', 'C-c'];
+let backKeys: Array<string> = ['escape', 'q', 'C-c'];
 mainMenu.key(backKeys, quit);
 
-let settingsMenu = blessed.form({
+let settingsMenu: Widgets.FormElement<Widgets.FormOptions> = blessed.form({
   keys: true,
   left: 'center',
   top: 'center',
@@ -130,7 +137,7 @@ let settingsMenu = blessed.form({
 settingsMenu.key(backKeys, ()=>{show(mainMenu);});
 
 
-var check = blessed.checkbox({
+var check: Widgets.CheckboxElement = blessed.checkbox({
   parent: settingsMenu,
   keys: true,
   style: {...menuStyle},
@@ -143,7 +150,7 @@ var check = blessed.checkbox({
 check.key(backKeys, ()=>{show(mainMenu);});
 highlightOnFocus(check);
 
-var progress = blessed.progressbar({
+var progress: Widgets.ProgressBarElement = blessed.progressbar({
   parent: settingsMenu,
   keys: true,
   style: {
@@ -162,7 +169,7 @@ var progress = blessed.progressbar({
 progress.key(backKeys, ()=>{show(mainMenu);});
 highlightOnFocus(progress);
 
-let multiplayerMenu = blessed.form({
+let multiplayerMenu: Widgets.FormElement<Widgets.FormOptions> = blessed.form({
   keys: true,
   left: 'center',
   top: 'center',
@@ -176,7 +183,7 @@ let multiplayerMenu = blessed.form({
 });
 multiplayerMenu.key(backKeys, ()=>{show(mainMenu);});
 
-var ipAddressInput = blessed.textbox({
+var ipAddressInput: Widgets.TextboxElement = blessed.textbox({
   parent: multiplayerMenu,
   inputOnFocus: true,
   style: {...menuStyle},
@@ -191,7 +198,7 @@ ipAddressInput.key(['enter'], ()=>{
   show(connectingMessage);
   
   let client: Colyseus.Client = new Colyseus.Client('ws://localhost:2567');
-  client.joinOrCreate('my_room').then((room)=>{
+  client.joinOrCreate('my_room').then((room: Colyseus.Room)=>{
       console.log(room.sessionId, "joined", room.name);
       show(connectedMessage);
   }).catch(error => {
@@ -200,7 +207,7 @@ ipAddressInput.key(['enter'], ()=>{
 
 });
 
-let connectingMessage = blessed.box({
+let connectingMessage: Widgets.BoxElement = blessed.box({
   style: menuStyle,
   border: 'line',
   width: 'shrink',
@@ -213,7 +220,7 @@ let connectingMessage = blessed.box({
 });
 connectingMessage.key(backKeys, ()=>{show(multiplayerMenu);});
 
-let connectedMessage = blessed.box({
+let connectedMessage: Widgets.BoxElement = blessed.box({
   style: menuStyle,
   border: 'line',
   width: 'shrink',
