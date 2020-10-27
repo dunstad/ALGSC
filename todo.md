@@ -1,7 +1,7 @@
 ### todo
 
 #### server
-* configurable port
+* configurable port ☑
   * document how in the readme
 
 #### client

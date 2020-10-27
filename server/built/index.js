@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const http = require('http');
 const express = require('express');
 const cors = require('cors');
@@ -5,7 +7,8 @@ const colyseus = require('colyseus');
 const monitor = require("@colyseus/monitor").monitor;
 // const socialRoutes = require("@colyseus/social/express").default;
 const MyRoom = require('./rooms/MyRoom').MyRoom;
-const port = process.env.PORT || 2567;
+const settings = require("./settings.json");
+const port = settings.port || 2567;
 const app = express();
 app.use(cors());
 app.use(express.json());

@@ -3,7 +3,8 @@
     "outDir": "./built",
     "allowJs": true,
     "target": "es6", // up from 5, see https://stackoverflow.com/a/50203532
-    "module": "commonjs" // fixes Unexpected token export
+    "module": "commonjs", // fixes Unexpected token export
+    "resolveJsonModule": true // for the settings file
   },
   "include": ["./src/**/*"]
 }
