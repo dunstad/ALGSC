@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "npx tsc",
+    "start": "node built/main-menu.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "now": "npx tsc && node built/main-menu.js"
   },

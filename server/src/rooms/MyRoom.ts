@@ -1,3 +1,4 @@
+export {}; // fixes typescript errors, see https://stackoverflow.com/a/41975448
 const colyseus = require('colyseus');
 const MyRoomState = require('./schema/MyRoomState').MyRoomState;
 
