@@ -1,8 +1,9 @@
-var blessed = require('neo-blessed');
+let blessed = require('neo-blessed');
 import { BlessedProgram, widget, Widgets } from "blessed";
 import Colyseus = require("colyseus.js");
 import fs = require('fs');
 import settings = require('./settings.json');
+let chroma = require('chroma-js');
 
 let blessedScreen: Widgets.Screen = blessed.screen();
 
@@ -20,28 +21,36 @@ let image: Widgets.ImageElement = blessed.image({
     type: 'line'
   },
   style: {
-    fg: 'white',
-    bg: 'magenta',
     border: {
       fg: '#ffffff'
     },
-    hover: {
-      bg: 'green'
-    }
   }
 });
 
+function applySaturation(color: string) {
+  let result = chroma(color);
+  let modifier = (settings.saturation / 100) - .5;
+  console.log(modifier)
+  if (modifier < 0) {
+    result = result.desaturate(Math.abs(modifier) * 8);
+  }
+  if (modifier > 0) {
+    result = result.saturate(modifier * 8);
+  }
+  return result.hex();
+}
+
 let menuStyle = {
-  fg: 'cyan',
-    bg: 'navy',
+  fg: applySaturation('cyan'),
+    bg: applySaturation('navy'),
     border: {
-      fg: 'cyan'
+      fg: applySaturation('cyan'),
     },
     selected: {
-      fg: 'yellow',
+      fg: applySaturation('yellow'),
     },
     keyable: {
-      fg: 'yellow',
+      fg: applySaturation('yellow'),
     }
 };
 
@@ -134,7 +143,7 @@ let settingsMenu: Widgets.FormElement<Widgets.FormOptions> = blessed.form({
   border: {
     type: 'line'
   },
-  content: 'check\nslider ',
+  content: 'check\nslider\nsaturation ',
 });
 
 interface ValuedInput extends Widgets.Node {
@@ -145,6 +154,7 @@ interface ValuedInput extends Widgets.Node {
 function loadSettings(settings) {
   if (settings.check) {check.check();}
   progress.setProgress(settings.slider);
+  saturation.setProgress(settings.saturation);
 }
 
 function quitSettings() {
@@ -165,32 +175,46 @@ var check: Widgets.CheckboxElement = blessed.checkbox({
   style: {...menuStyle},
   width: '50%',
   height: 1,
-  left: 7,
+  left: 10,
   top: 0,
   name: 'check',
 });
 check.key(backKeys, quitSettings);
 highlightOnFocus(check);
 
-var progress: Widgets.ProgressBarElement = blessed.progressbar({
+let progressOptions: Widgets.ProgressBarOptions = {
   parent: settingsMenu,
   keys: true,
   style: {
     bar: {
-      fg: 'cyan',
-      bg: 'navy',
+      fg: applySaturation('cyan'),
+      bg: applySaturation('navy'),
     }
   },
   ch: ':',
   width: '50%',
   height: 1,
-  left: 7,
-  top: 1,
+  left: 10,
   filled: 50,
-  name: 'slider'
+}
+
+let progress: Widgets.ProgressBarElement = blessed.progressbar({
+  ...progressOptions,
+  name: 'slider',
+  top: 1,
+  style: {bar: {...progressOptions.style.bar}},
 });
 progress.key(backKeys, quitSettings);
 highlightOnFocus(progress);
+
+let saturation: Widgets.ProgressBarElement = blessed.progressbar({
+  ...progressOptions,
+  name: 'saturation',
+  top: 2,
+  style: {...progressOptions.style},
+});
+saturation.key(backKeys, quitSettings);
+highlightOnFocus(saturation);
 
 let multiplayerMenu: Widgets.FormElement<Widgets.FormOptions> = blessed.form({
   keys: true,

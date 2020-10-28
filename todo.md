@@ -4,6 +4,7 @@
 
 #### client
 * stealth mode
+  * all the colors seem weird now... fix later
 * actually use entered ip address
 * add a port input
   * give it default value 2567
