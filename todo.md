@@ -1,12 +1,9 @@
 ### todo
 
 #### server
-* configurable port ☑
-  * document how in the readme
 
 #### client
-* save settings to json
-  * stealth mode
+* stealth mode
 * actually use entered ip address
 * add a port input
   * give it default value 2567

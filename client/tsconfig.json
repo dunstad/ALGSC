@@ -2,7 +2,9 @@
   "compilerOptions": {
     "outDir": "./built",
     "allowJs": true,
-    "target": "es5"
+    "target": "es6", // this and module for importing settings
+    "module": "commonjs", // that makes tsc copy them
+    "resolveJsonModule": true // for the settings file
   },
   "include": ["./src/**/*"]
 }

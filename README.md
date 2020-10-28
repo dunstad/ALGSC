@@ -10,6 +10,8 @@ The plan is to make a server for a multiplayer factory building game, with a ter
 
 Start the server with ```npm start``` from the server folder.
 
+The default port is 2567, but can be changed in the server's settings.json.
+
 ### client
 
 Run the client with ```npm run now``` from the client folder.

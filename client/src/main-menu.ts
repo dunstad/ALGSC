@@ -1,6 +1,8 @@
 var blessed = require('neo-blessed');
 import { BlessedProgram, widget, Widgets } from "blessed";
 import Colyseus = require("colyseus.js");
+import fs = require('fs');
+import settings = require('./settings.json');
 
 let blessedScreen: Widgets.Screen = blessed.screen();
 
@@ -134,8 +136,28 @@ let settingsMenu: Widgets.FormElement<Widgets.FormOptions> = blessed.form({
   },
   content: 'check\nslider ',
 });
-settingsMenu.key(backKeys, ()=>{show(mainMenu);});
 
+interface ValuedInput extends Widgets.Node {
+  value: boolean | number;
+  name: string;
+}
+
+function loadSettings(settings) {
+  if (settings.check) {check.check();}
+  progress.setProgress(settings.slider);
+}
+
+function quitSettings() {
+  let settings = {};
+  for (let child of settingsMenu.children as ValuedInput[]) {
+    settings[child.name] = child.value;
+  }
+  fs.writeFile('./src/settings.json', JSON.stringify(settings), (err) => {
+    if (err) {throw err;}
+  });
+  show(mainMenu);
+}
+settingsMenu.key(backKeys, quitSettings);
 
 var check: Widgets.CheckboxElement = blessed.checkbox({
   parent: settingsMenu,
@@ -147,7 +169,7 @@ var check: Widgets.CheckboxElement = blessed.checkbox({
   top: 0,
   name: 'check',
 });
-check.key(backKeys, ()=>{show(mainMenu);});
+check.key(backKeys, quitSettings);
 highlightOnFocus(check);
 
 var progress: Widgets.ProgressBarElement = blessed.progressbar({
@@ -165,8 +187,9 @@ var progress: Widgets.ProgressBarElement = blessed.progressbar({
   left: 7,
   top: 1,
   filled: 50,
+  name: 'slider'
 });
-progress.key(backKeys, ()=>{show(mainMenu);});
+progress.key(backKeys, quitSettings);
 highlightOnFocus(progress);
 
 let multiplayerMenu: Widgets.FormElement<Widgets.FormOptions> = blessed.form({
@@ -233,4 +256,10 @@ let connectedMessage: Widgets.BoxElement = blessed.box({
 });
 connectedMessage.key(backKeys, ()=>{show(multiplayerMenu);});
 
-show(mainMenu);
+
+function main() {
+  loadSettings(settings);
+  show(mainMenu);
+}
+
+main();
