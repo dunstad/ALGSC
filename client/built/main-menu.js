@@ -41,9 +41,6 @@ let image = blessed.image({
     style: menuStyle,
 });
 function applySaturation(color) {
-    // return color
-    // console.log(chroma(color).name())
-    // return chroma(color).name()
     let result = chroma(color);
     let modifier = (settings.saturation / 100) - .5;
     console.log(modifier);
@@ -147,7 +144,7 @@ function quitSettings() {
     for (let child of settingsMenu.children) {
         settings[child.name] = child.value;
     }
-    fs.writeFile('./src/settings.json', JSON.stringify(settings), (err) => {
+    fs.writeFile('./built/settings.json', JSON.stringify(settings), (err) => {
         if (err) {
             throw err;
         }

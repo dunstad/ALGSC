@@ -16,7 +16,7 @@
     "@types/node": "^14.14.0",
     "chroma-js": "^2.1.0",
     "colyseus.js": "^0.13.2",
-    "neo-blessed": "^0.2.0",
+    "neo-blessed": "git+https://github.com/dunstad/neo-blessed.git",
     "typescript": "^4.0.3",
     "ws": "^7.3.1"
   }

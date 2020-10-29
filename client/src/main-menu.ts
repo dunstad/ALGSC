@@ -48,7 +48,6 @@ let image: Widgets.ImageElement = blessed.image({
 function applySaturation(color: string) {
   let result = chroma(color);
   let modifier = (settings.saturation / 100) - .5;
-  console.log(modifier)
   if (modifier < 0) {
     result = result.desaturate(Math.abs(modifier) * 8);
   }
@@ -166,7 +165,7 @@ function quitSettings() {
   for (let child of settingsMenu.children as ValuedInput[]) {
     settings[child.name] = child.value;
   }
-  fs.writeFile('./src/settings.json', JSON.stringify(settings), (err) => {
+  fs.writeFile('./built/settings.json', JSON.stringify(settings), (err) => {
     if (err) {throw err;}
   });
   show(mainMenu);
