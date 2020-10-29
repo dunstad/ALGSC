@@ -5,7 +5,11 @@ const Colyseus = require("colyseus.js");
 const fs = require("fs");
 const settings = require("./settings.json");
 let chroma = require('chroma-js');
-let blessedScreen = blessed.screen();
+let blessedScreen = blessed.screen({
+    smartCSR: true,
+    terminal: 'xterm-256color',
+    extended: true,
+});
 let currentMenu;
 let image = blessed.image({
     parent: blessedScreen,
@@ -20,11 +24,13 @@ let image = blessed.image({
     },
     style: {
         border: {
-            fg: '#ffffff'
+            fg: 'cyan',
+            bg: '#202330',
         },
     }
 });
 function applySaturation(color) {
+    return color;
     let result = chroma(color);
     let modifier = (settings.saturation / 100) - .5;
     console.log(modifier);
@@ -38,15 +44,19 @@ function applySaturation(color) {
 }
 let menuStyle = {
     fg: applySaturation('cyan'),
-    bg: applySaturation('navy'),
+    bg: applySaturation('#202330'),
     border: {
         fg: applySaturation('cyan'),
+        bg: applySaturation('#202330'),
     },
     selected: {
-        fg: applySaturation('yellow'),
+        // fg: applySaturation('#ffff00'),
+        fg: 'yellow',
+        bg: applySaturation('#202330'),
     },
     keyable: {
-        fg: applySaturation('yellow'),
+        // fg: applySaturation('#ffff00'),
+        fg: 'yellow',
     }
 };
 function quit() {

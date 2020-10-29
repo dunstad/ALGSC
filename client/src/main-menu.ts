@@ -5,7 +5,11 @@ import fs = require('fs');
 import settings = require('./settings.json');
 let chroma = require('chroma-js');
 
-let blessedScreen: Widgets.Screen = blessed.screen();
+let blessedScreen: Widgets.Screen = blessed.screen({
+  smartCSR: true,
+  terminal: 'xterm-256color',
+  extended: true,
+});
 
 let currentMenu: Widgets.BoxElement;
 
@@ -22,12 +26,14 @@ let image: Widgets.ImageElement = blessed.image({
   },
   style: {
     border: {
-      fg: '#ffffff'
+      fg: 'cyan',
+      bg: '#202330',
     },
   }
 });
 
 function applySaturation(color: string) {
+  return color
   let result = chroma(color);
   let modifier = (settings.saturation / 100) - .5;
   console.log(modifier)
@@ -42,16 +48,20 @@ function applySaturation(color: string) {
 
 let menuStyle = {
   fg: applySaturation('cyan'),
-    bg: applySaturation('navy'),
-    border: {
-      fg: applySaturation('cyan'),
-    },
-    selected: {
-      fg: applySaturation('yellow'),
-    },
-    keyable: {
-      fg: applySaturation('yellow'),
-    }
+  bg: applySaturation('#202330'),
+  border: {
+    fg: applySaturation('cyan'),
+    bg: applySaturation('#202330'),
+  },
+  selected: {
+    // fg: applySaturation('#ffff00'),
+    fg: 'yellow',
+    bg: applySaturation('#202330'),
+  },
+  keyable: {
+    // fg: applySaturation('#ffff00'),
+    fg: 'yellow',
+  }
 };
 
 function quit() {
