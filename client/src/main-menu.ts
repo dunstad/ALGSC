@@ -13,6 +13,24 @@ let blessedScreen: Widgets.Screen = blessed.screen({
 
 let currentMenu: Widgets.BoxElement;
 
+let menuStyle = {
+  fg: applySaturation('cyan'),
+  bg: applySaturation('#202330'),
+  border: {
+    fg: applySaturation('cyan'),
+    bg: applySaturation('#202330'),
+  },
+  selected: {
+    fg: applySaturation('#ffff00'),
+    // fg: 'yellow',
+    bg: applySaturation('#202330'),
+  },
+  keyable: {
+    fg: applySaturation('#ffff00'),
+    // fg: 'yellow',
+  }
+};
+
 let image: Widgets.ImageElement = blessed.image({
   parent: blessedScreen,
   file: './assets/city.png',
@@ -24,16 +42,10 @@ let image: Widgets.ImageElement = blessed.image({
   border: {
     type: 'line'
   },
-  style: {
-    border: {
-      fg: 'cyan',
-      bg: '#202330',
-    },
-  }
+  style: menuStyle,
 });
 
 function applySaturation(color: string) {
-  return color
   let result = chroma(color);
   let modifier = (settings.saturation / 100) - .5;
   console.log(modifier)
@@ -45,24 +57,6 @@ function applySaturation(color: string) {
   }
   return result.hex();
 }
-
-let menuStyle = {
-  fg: applySaturation('cyan'),
-  bg: applySaturation('#202330'),
-  border: {
-    fg: applySaturation('cyan'),
-    bg: applySaturation('#202330'),
-  },
-  selected: {
-    // fg: applySaturation('#ffff00'),
-    fg: 'yellow',
-    bg: applySaturation('#202330'),
-  },
-  keyable: {
-    // fg: applySaturation('#ffff00'),
-    fg: 'yellow',
-  }
-};
 
 function quit() {
   return process.exit(0);

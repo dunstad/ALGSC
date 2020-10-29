@@ -3,11 +3,8 @@
 #### server
 
 #### client
-* stealth mode
-  * blessed hex conversion is getting yellow wrong
-    * it probably thinks the terminal can't handle it?
-    * try a different chroma output format
-    * check blessed docs for terminal settings
+* move colors to a separate file
+* move ui settings to a separate file?
 * actually use entered ip address
 * add a port input
   * give it default value 2567

@@ -11,6 +11,22 @@ let blessedScreen = blessed.screen({
     extended: true,
 });
 let currentMenu;
+let menuStyle = {
+    fg: applySaturation('cyan'),
+    bg: applySaturation('#202330'),
+    border: {
+        fg: applySaturation('cyan'),
+        bg: applySaturation('#202330'),
+    },
+    selected: {
+        fg: applySaturation('#ffff00'),
+        // fg: 'yellow',
+        bg: applySaturation('#202330'),
+    },
+    keyable: {
+        fg: applySaturation('#ffff00'),
+    }
+};
 let image = blessed.image({
     parent: blessedScreen,
     file: './assets/city.png',
@@ -22,15 +38,12 @@ let image = blessed.image({
     border: {
         type: 'line'
     },
-    style: {
-        border: {
-            fg: 'cyan',
-            bg: '#202330',
-        },
-    }
+    style: menuStyle,
 });
 function applySaturation(color) {
-    return color;
+    // return color
+    // console.log(chroma(color).name())
+    // return chroma(color).name()
     let result = chroma(color);
     let modifier = (settings.saturation / 100) - .5;
     console.log(modifier);
@@ -42,23 +55,6 @@ function applySaturation(color) {
     }
     return result.hex();
 }
-let menuStyle = {
-    fg: applySaturation('cyan'),
-    bg: applySaturation('#202330'),
-    border: {
-        fg: applySaturation('cyan'),
-        bg: applySaturation('#202330'),
-    },
-    selected: {
-        // fg: applySaturation('#ffff00'),
-        fg: 'yellow',
-        bg: applySaturation('#202330'),
-    },
-    keyable: {
-        // fg: applySaturation('#ffff00'),
-        fg: 'yellow',
-    }
-};
 function quit() {
     return process.exit(0);
 }
