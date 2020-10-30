@@ -29,7 +29,7 @@ let menuStyle = {
 };
 let image = blessed.image({
     parent: blessedScreen,
-    file: './assets/city.png',
+    file: './assets/title.png',
     top: 'center',
     left: 'center',
     height: Math.min(blessedScreen.height, 40),
@@ -43,7 +43,6 @@ let image = blessed.image({
 function applySaturation(color) {
     let result = chroma(color);
     let modifier = (settings.saturation / 100) - .5;
-    console.log(modifier);
     if (modifier < 0) {
         result = result.desaturate(Math.abs(modifier) * 8);
     }

@@ -33,7 +33,7 @@ let menuStyle = {
 
 let image: Widgets.ImageElement = blessed.image({
   parent: blessedScreen,
-  file: './assets/city.png',
+  file: './assets/title.png',
   top: 'center',
   left: 'center',
   height: Math.min(blessedScreen.height as number, 40),
