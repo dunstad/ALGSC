@@ -31,9 +31,11 @@ let menuStyle = {
   }
 };
 
+let stealth = settings.saturation < 35 ? 'stealth_' : '';
+
 let image: Widgets.ImageElement = blessed.image({
   parent: blessedScreen,
-  file: './assets/title.png',
+  file: `./assets/${stealth}title.png`,
   top: 'center',
   left: 'center',
   height: Math.min(blessedScreen.height as number, 40),

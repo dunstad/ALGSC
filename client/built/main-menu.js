@@ -27,9 +27,10 @@ let menuStyle = {
         fg: applySaturation('#ffff00'),
     }
 };
+let stealth = settings.saturation < 35 ? 'stealth_' : '';
 let image = blessed.image({
     parent: blessedScreen,
-    file: './assets/title.png',
+    file: `./assets/${stealth}title.png`,
     top: 'center',
     left: 'center',
     height: Math.min(blessedScreen.height, 40),
