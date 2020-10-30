@@ -1,9 +1,12 @@
 ### todo
 
 #### server
+* get rot.js
+* send any state
+  * map?
+  * chat?
 
 #### client
-* actually use entered ip address
-* add a port input
-  * give it default value 2567
+* weird visual glitch in multiplayer menu
+  * happens when typing in the text boxes
 * cleaner error message on connection failure

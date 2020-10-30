@@ -92,7 +92,11 @@ let mainMenuItems: MenuItems = [
   },
   {
     name: 'Multiplayer',
-    action: ()=>{show(multiplayerMenu);},
+    action: ()=>{
+      show(multiplayerMenu);
+      portInput.setValue(settings.port);
+      blessedScreen.render()
+    },
   },
   {
     name: 'Settings',
@@ -213,38 +217,14 @@ let multiplayerMenu: Widgets.FormElement<Widgets.FormOptions> = blessed.form({
   left: 'center',
   top: 'center',
   width: '50%',
-  height: 3,
+  height: 'shrink',
   style: menuStyle,
   border: {
     type: 'line'
   },
-  content: 'Connect: ',
+  content: 'IP: \nPort: ',
 });
 multiplayerMenu.key(backKeys, ()=>{show(mainMenu);});
-
-var ipAddressInput: Widgets.TextboxElement = blessed.textbox({
-  parent: multiplayerMenu,
-  inputOnFocus: true,
-  style: {...menuStyle},
-  width: '50%',
-  height: 1,
-  left: 9,
-  top: 0,
-  name: 'ipAddressInput',
-});
-highlightOnFocus(ipAddressInput);
-ipAddressInput.key(['enter'], ()=>{
-  show(connectingMessage);
-  
-  let client: Colyseus.Client = new Colyseus.Client('ws://localhost:2567');
-  client.joinOrCreate('my_room').then((room: Colyseus.Room)=>{
-      console.log(room.sessionId, "joined", room.name);
-      show(connectedMessage);
-  }).catch(error => {
-      console.log("JOIN ERROR", error);
-  });
-
-});
 
 let connectingMessage: Widgets.BoxElement = blessed.box({
   style: menuStyle,
@@ -272,6 +252,43 @@ let connectedMessage: Widgets.BoxElement = blessed.box({
 });
 connectedMessage.key(backKeys, ()=>{show(multiplayerMenu);});
 
+let ipAddressInput: Widgets.TextboxElement = blessed.textbox({
+  parent: multiplayerMenu,
+  inputOnFocus: true,
+  style: {...menuStyle},
+  width: '50%',
+  height: 1,
+  left: 6,
+  top: 0,
+  name: 'ipAddressInput',
+});
+highlightOnFocus(ipAddressInput);
+ipAddressInput.key(['enter'], connect);
+
+let portInput: Widgets.TextboxElement = blessed.textbox({
+  parent: multiplayerMenu,
+  inputOnFocus: true,
+  style: {...menuStyle},
+  width: '50%',
+  height: 1,
+  left: 6,
+  top: 1,
+  name: 'portInput',
+});
+highlightOnFocus(portInput);
+portInput.key(['enter'], connect);
+
+function connect() {
+  show(connectingMessage);
+
+  let client: Colyseus.Client = new Colyseus.Client(`ws://${ipAddressInput.value}:${portInput.value}`);
+  client.joinOrCreate('my_room').then((room: Colyseus.Room)=>{
+      console.log(room.sessionId, "joined", room.name);
+      show(connectedMessage);
+  }).catch(error => {
+      console.log("JOIN ERROR", error);
+  });
+}
 
 function main() {
   loadSettings(settings);
