@@ -1,5 +1,5 @@
 import chroma = require('chroma-js');
-import settings = require('./settings.json');
+import {settings} from './settings'
 
 function applySaturation(color: string) {
   let result = chroma(color);

@@ -4,7 +4,7 @@ let blessed = require('neo-blessed');
 const Colyseus = require("colyseus.js");
 const fs = require("fs");
 const colors_1 = require("./colors");
-const settings = require("./settings.json");
+const settings_1 = require("./settings");
 let blessedScreen = blessed.screen({
     smartCSR: true,
     terminal: 'xterm-256color',
@@ -26,7 +26,7 @@ let menuStyle = {
         fg: colors_1.colors.selectedColor,
     }
 };
-let stealth = settings.saturation < 35 ? 'stealth_' : '';
+let stealth = settings_1.settings.saturation < 35 ? 'stealth_' : '';
 let image = blessed.image({
     parent: blessedScreen,
     file: `./assets/${stealth}title.png`,
@@ -230,7 +230,7 @@ let connectedMessage = blessed.box({
 });
 connectedMessage.key(backKeys, () => { show(multiplayerMenu); });
 function main() {
-    loadSettings(settings);
+    loadSettings(settings_1.settings);
     show(mainMenu);
 }
 main();

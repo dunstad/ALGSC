@@ -3,12 +3,7 @@ import { BlessedProgram, widget, Widgets } from "blessed";
 import Colyseus = require("colyseus.js");
 import fs = require('fs');
 import {colors} from './colors';
-import settings = require('./settings.json');
-type Settings = {
-  check: boolean,
-  slider: number,
-  saturation: number,
-}
+import {settings, Settings} from './settings'
 
 let blessedScreen: Widgets.Screen = blessed.screen({
   smartCSR: true,

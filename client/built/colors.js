@@ -2,10 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.colors = void 0;
 const chroma = require("chroma-js");
-const settings = require("./settings.json");
+const settings_1 = require("./settings");
 function applySaturation(color) {
     let result = chroma(color);
-    let modifier = (settings.saturation / 100) - .5;
+    let modifier = (settings_1.settings.saturation / 100) - .5;
     if (modifier < 0) {
         result = result.desaturate(Math.abs(modifier) * 8);
     }
