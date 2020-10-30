@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 let blessed = require('neo-blessed');
 const Colyseus = require("colyseus.js");
 const fs = require("fs");
+const colors_1 = require("./colors");
 const settings = require("./settings.json");
-let chroma = require('chroma-js');
 let blessedScreen = blessed.screen({
     smartCSR: true,
     terminal: 'xterm-256color',
@@ -12,19 +12,18 @@ let blessedScreen = blessed.screen({
 });
 let currentMenu;
 let menuStyle = {
-    fg: applySaturation('cyan'),
-    bg: applySaturation('#202330'),
+    fg: colors_1.colors.uiColor,
+    bg: colors_1.colors.backgroundColor,
     border: {
-        fg: applySaturation('cyan'),
-        bg: applySaturation('#202330'),
+        fg: colors_1.colors.uiColor,
+        bg: colors_1.colors.backgroundColor,
     },
     selected: {
-        fg: applySaturation('#ffff00'),
-        // fg: 'yellow',
-        bg: applySaturation('#202330'),
+        fg: colors_1.colors.selectedColor,
+        bg: colors_1.colors.backgroundColor,
     },
     keyable: {
-        fg: applySaturation('#ffff00'),
+        fg: colors_1.colors.selectedColor,
     }
 };
 let stealth = settings.saturation < 35 ? 'stealth_' : '';
@@ -41,17 +40,6 @@ let image = blessed.image({
     },
     style: menuStyle,
 });
-function applySaturation(color) {
-    let result = chroma(color);
-    let modifier = (settings.saturation / 100) - .5;
-    if (modifier < 0) {
-        result = result.desaturate(Math.abs(modifier) * 8);
-    }
-    if (modifier > 0) {
-        result = result.saturate(modifier * 8);
-    }
-    return result.hex();
-}
 function quit() {
     return process.exit(0);
 }
@@ -167,12 +155,10 @@ highlightOnFocus(check);
 let progressOptions = {
     parent: settingsMenu,
     keys: true,
-    style: {
-        bar: {
-            fg: applySaturation('cyan'),
-            bg: applySaturation('navy'),
-        }
-    },
+    style: Object.assign(Object.assign({}, menuStyle), { bar: {
+            fg: colors_1.colors.uiColor,
+            bg: colors_1.colors.backgroundColor,
+        } }),
     ch: ':',
     width: '50%',
     height: 1,
@@ -182,7 +168,7 @@ let progressOptions = {
 let progress = blessed.progressbar(Object.assign(Object.assign({}, progressOptions), { name: 'slider', top: 1, style: { bar: Object.assign({}, progressOptions.style.bar) } }));
 progress.key(backKeys, quitSettings);
 highlightOnFocus(progress);
-let saturation = blessed.progressbar(Object.assign(Object.assign({}, progressOptions), { name: 'saturation', top: 2, style: Object.assign({}, progressOptions.style) }));
+let saturation = blessed.progressbar(Object.assign(Object.assign({}, progressOptions), { name: 'saturation', top: 2, style: { bar: Object.assign({}, progressOptions.style.bar) } }));
 saturation.key(backKeys, quitSettings);
 highlightOnFocus(saturation);
 let multiplayerMenu = blessed.form({

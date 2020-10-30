@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@types/blessed": "^0.1.17",
+    "@types/chroma-js": "^2.1.0",
     "@types/node": "^14.14.0",
     "chroma-js": "^2.1.0",
     "colyseus.js": "^0.13.2",

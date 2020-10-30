@@ -2,8 +2,13 @@ let blessed = require('neo-blessed');
 import { BlessedProgram, widget, Widgets } from "blessed";
 import Colyseus = require("colyseus.js");
 import fs = require('fs');
+import {colors} from './colors';
 import settings = require('./settings.json');
-let chroma = require('chroma-js');
+type Settings = {
+  check: boolean,
+  slider: number,
+  saturation: number,
+}
 
 let blessedScreen: Widgets.Screen = blessed.screen({
   smartCSR: true,
@@ -14,20 +19,18 @@ let blessedScreen: Widgets.Screen = blessed.screen({
 let currentMenu: Widgets.BoxElement;
 
 let menuStyle = {
-  fg: applySaturation('cyan'),
-  bg: applySaturation('#202330'),
+  fg: colors.uiColor,
+  bg: colors.backgroundColor,
   border: {
-    fg: applySaturation('cyan'),
-    bg: applySaturation('#202330'),
+    fg: colors.uiColor,
+    bg: colors.backgroundColor,
   },
   selected: {
-    fg: applySaturation('#ffff00'),
-    // fg: 'yellow',
-    bg: applySaturation('#202330'),
+    fg: colors.selectedColor,
+    bg: colors.backgroundColor,
   },
   keyable: {
-    fg: applySaturation('#ffff00'),
-    // fg: 'yellow',
+    fg: colors.selectedColor,
   }
 };
 
@@ -46,18 +49,6 @@ let image: Widgets.ImageElement = blessed.image({
   },
   style: menuStyle,
 });
-
-function applySaturation(color: string) {
-  let result = chroma(color);
-  let modifier = (settings.saturation / 100) - .5;
-  if (modifier < 0) {
-    result = result.desaturate(Math.abs(modifier) * 8);
-  }
-  if (modifier > 0) {
-    result = result.saturate(modifier * 8);
-  }
-  return result.hex();
-}
 
 function quit() {
   return process.exit(0);
@@ -156,7 +147,7 @@ interface ValuedInput extends Widgets.Node {
   name: string;
 }
 
-function loadSettings(settings) {
+function loadSettings(settings: Settings) {
   if (settings.check) {check.check();}
   progress.setProgress(settings.slider);
   saturation.setProgress(settings.saturation);
@@ -191,9 +182,10 @@ let progressOptions: Widgets.ProgressBarOptions = {
   parent: settingsMenu,
   keys: true,
   style: {
+    ...menuStyle,
     bar: {
-      fg: applySaturation('cyan'),
-      bg: applySaturation('navy'),
+      fg: colors.uiColor,
+      bg: colors.backgroundColor,
     }
   },
   ch: ':',
@@ -216,7 +208,7 @@ let saturation: Widgets.ProgressBarElement = blessed.progressbar({
   ...progressOptions,
   name: 'saturation',
   top: 2,
-  style: {...progressOptions.style},
+  style: {bar: {...progressOptions.style.bar}},
 });
 saturation.key(backKeys, quitSettings);
 highlightOnFocus(saturation);
