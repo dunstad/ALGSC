@@ -1,3 +1,5 @@
+![title screen](https://i.imgur.com/vknITOA.png)
+
 ![build status](https://img.shields.io/github/workflow/status/dunstad/ALGSC/Node.js%20CI/develop)
 
 ## What is this?
