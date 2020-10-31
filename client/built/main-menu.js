@@ -180,7 +180,7 @@ let multiplayerMenu = blessed.form({
     left: 'center',
     top: 'center',
     width: '50%',
-    height: 'shrink',
+    height: 4,
     style: menuStyle,
     border: {
         type: 'line'
