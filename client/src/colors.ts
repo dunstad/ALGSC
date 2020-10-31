@@ -17,4 +17,5 @@ export let colors = {
   backgroundColor: applySaturation('#202330'),
   uiColor: applySaturation('cyan'),
   selectedColor: applySaturation('yellow'),
+  errorColor: applySaturation('red'),
 };

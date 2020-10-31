@@ -252,6 +252,22 @@ let connectedMessage: Widgets.BoxElement = blessed.box({
 });
 connectedMessage.key(backKeys, ()=>{show(multiplayerMenu);});
 
+let connectionFailedMessage: Widgets.BoxElement = blessed.box({
+  style: {
+    ...menuStyle,
+    fg: colors.errorColor,
+  },
+  border: 'line',
+  width: 'shrink',
+  height: 'shrink',
+  left: 'center',
+  top: 'center',
+  padding: 1,
+  name: 'connectionFailedMessage',
+  content: ' Connection Failed! ',
+});
+connectionFailedMessage.key(backKeys, ()=>{show(multiplayerMenu);});
+
 let ipAddressInput: Widgets.TextboxElement = blessed.textbox({
   parent: multiplayerMenu,
   inputOnFocus: true,
@@ -283,10 +299,11 @@ function connect() {
 
   let client: Colyseus.Client = new Colyseus.Client(`ws://${ipAddressInput.value}:${portInput.value}`);
   client.joinOrCreate('my_room').then((room: Colyseus.Room)=>{
-      console.log(room.sessionId, "joined", room.name);
-      show(connectedMessage);
+    console.log(room.sessionId, "joined", room.name);
+    show(connectedMessage);
   }).catch(error => {
-      console.log("JOIN ERROR", error);
+    show(connectionFailedMessage);
+    // console.log("JOIN ERROR", error);
   });
 }
 

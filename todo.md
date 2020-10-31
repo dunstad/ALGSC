@@ -7,4 +7,3 @@
   * chat?
 
 #### client
-* cleaner error message on connection failure

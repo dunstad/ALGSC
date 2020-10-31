@@ -212,6 +212,18 @@ let connectedMessage = blessed.box({
     content: ' Connected! ',
 });
 connectedMessage.key(backKeys, () => { show(multiplayerMenu); });
+let connectionFailedMessage = blessed.box({
+    style: Object.assign(Object.assign({}, menuStyle), { fg: colors_1.colors.errorColor }),
+    border: 'line',
+    width: 'shrink',
+    height: 'shrink',
+    left: 'center',
+    top: 'center',
+    padding: 1,
+    name: 'connectionFailedMessage',
+    content: ' Connection Failed! ',
+});
+connectionFailedMessage.key(backKeys, () => { show(multiplayerMenu); });
 let ipAddressInput = blessed.textbox({
     parent: multiplayerMenu,
     inputOnFocus: true,
@@ -243,7 +255,8 @@ function connect() {
         console.log(room.sessionId, "joined", room.name);
         show(connectedMessage);
     }).catch(error => {
-        console.log("JOIN ERROR", error);
+        show(connectionFailedMessage);
+        // console.log("JOIN ERROR", error);
     });
 }
 function main() {
