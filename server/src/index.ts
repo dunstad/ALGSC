@@ -1,7 +1,7 @@
-const http = require('http');
-const express = require('express');
-const cors = require('cors');
-const colyseus = require('colyseus');
+import http = require('http');
+import express = require('express');
+import cors = require('cors');
+import colyseus = require('colyseus');
 const monitor = require("@colyseus/monitor").monitor;
 // const socialRoutes = require("@colyseus/social/express").default;
 

@@ -4,7 +4,9 @@
     "allowJs": true,
     "target": "es6", // up from 5, see https://stackoverflow.com/a/50203532
     "module": "commonjs", // fixes Unexpected token export
-    "resolveJsonModule": true // for the settings file
+    "resolveJsonModule": true, // for the settings file
+    "experimentalDecorators": true, // for colyseus
+    "allowSyntheticDefaultImports": true // fix colyseus imports
   },
   "include": ["./src/**/*"]
 }

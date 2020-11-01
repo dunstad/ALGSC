@@ -1,9 +1,12 @@
-const schema = require('@colyseus/schema');
+import {Schema, type} from '@colyseus/schema';
+import {GameMap} from '../GameMap'
 
-class MyRoomState extends schema.Schema {}
+export class MyRoomState extends Schema {
+  @type('string')
+  map: GameMap;
 
-schema.defineTypes(MyRoomState, {
-  mySynchronizedProperty: "string",
-});
-
-exports.MyRoomState = MyRoomState;
+  constructor() {
+    super();
+    this.map = new GameMap();
+  }
+}

@@ -1,10 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const colyseus = require('colyseus');
-const MyRoomState = require('./schema/MyRoomState').MyRoomState;
-exports.MyRoom = class extends colyseus.Room {
+exports.MyRoom = void 0;
+const colyseus_1 = require("colyseus");
+const MyRoomState_1 = require("./schema/MyRoomState");
+class MyRoom extends colyseus_1.Room {
     onCreate(options) {
-        this.setState(new MyRoomState());
+        this.setState(new MyRoomState_1.MyRoomState());
         this.onMessage("type", (client, message) => {
             //
             // handle "type" message.
@@ -18,4 +19,5 @@ exports.MyRoom = class extends colyseus.Room {
     }
     onDispose() {
     }
-};
+}
+exports.MyRoom = MyRoom;

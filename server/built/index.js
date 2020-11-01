@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const http = require('http');
-const express = require('express');
-const cors = require('cors');
-const colyseus = require('colyseus');
+const http = require("http");
+const express = require("express");
+const cors = require("cors");
+const colyseus = require("colyseus");
 const monitor = require("@colyseus/monitor").monitor;
 // const socialRoutes = require("@colyseus/social/express").default;
 const MyRoom = require('./rooms/MyRoom').MyRoom;
