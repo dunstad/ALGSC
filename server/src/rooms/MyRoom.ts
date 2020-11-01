@@ -15,8 +15,9 @@ export class MyRoom extends Room<MyRoomState> {
 
   }
 
-  onJoin (client, options) {
+  onJoin (client: Client, options) {
     console.log('someone joined!')
+    this.state.createPlayer(client.sessionId);
   }
 
   onLeave (client, consented) {

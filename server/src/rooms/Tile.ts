@@ -12,7 +12,7 @@ export class TileType {
 
 export class Tile extends TileType {
   point: Point3;
-  id: number;
+  id: string;
 }
 
 type TileTypes = {

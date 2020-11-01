@@ -299,13 +299,18 @@ function connect() {
 
   let client: Colyseus.Client = new Colyseus.Client(`ws://${ipAddressInput.value}:${portInput.value}`);
   client.joinOrCreate('my_room').then((room: Colyseus.Room)=>{
+    
     console.log(room.sessionId, "joined", room.name);
     show(connectedMessage);
-    // console.log(JSON.stringify(room.state));
-    // why is the state empty??
-    room.onStateChange((state)=>{
-      console.log(state.mapJSON);
+    
+    room.onStateChange.once((state) => {
+      console.log("this is the first room state!", state.mapJSON);
     });
+    
+    room.onStateChange((state) => {
+      console.log("the room state has been updated:", state.mapJSON);
+    });
+    
   }).catch(error => {
     show(connectionFailedMessage);
     console.log("JOIN ERROR", error);

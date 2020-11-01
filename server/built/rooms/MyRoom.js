@@ -14,6 +14,7 @@ class MyRoom extends colyseus_1.Room {
     }
     onJoin(client, options) {
         console.log('someone joined!');
+        this.state.createPlayer(client.sessionId);
     }
     onLeave(client, consented) {
     }

@@ -14,8 +14,21 @@ class MyRoomState extends schema_1.Schema {
     constructor() {
         super();
         this.map = new GameMap_1.GameMap();
-        let rock = Object.assign(Object.assign({}, Tile_1.tileTypes.rock), { point: { x: -2, y: 0, z: 0 }, id: 0 });
+        let rock = Object.assign(Object.assign({}, Tile_1.tileTypes.rock), { point: { x: -2, y: 0, z: 0 }, id: 'id?' });
         this.map.set(rock.point, rock);
+        this.mapJSON = JSON.stringify(this.map);
+        this.players = {};
+    }
+    createPlayer(sessionId) {
+        this.players[sessionId] = { x: 0, y: 0, z: 0 };
+        let player = Object.assign(Object.assign({}, Tile_1.tileTypes.player), { point: this.players[sessionId], id: sessionId });
+        this.map.set(player.point, player);
+        this.mapJSON = JSON.stringify(this.map);
+    }
+    removePlayer(sessionId) {
+        let air = Object.assign(Object.assign({}, Tile_1.tileTypes.air), { point: this.players[sessionId], id: 'ok but for real what do i do about these' });
+        this.map.set(air.point, air);
+        delete this.players[sessionId];
         this.mapJSON = JSON.stringify(this.map);
     }
 }

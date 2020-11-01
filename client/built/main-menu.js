@@ -254,10 +254,11 @@ function connect() {
     client.joinOrCreate('my_room').then((room) => {
         console.log(room.sessionId, "joined", room.name);
         show(connectedMessage);
-        // console.log(JSON.stringify(room.state));
-        // why is the state empty??
+        room.onStateChange.once((state) => {
+            console.log("this is the first room state!", state.mapJSON);
+        });
         room.onStateChange((state) => {
-            console.log(state.mapJSON);
+            console.log("the room state has been updated:", state.mapJSON);
         });
     }).catch(error => {
         show(connectionFailedMessage);
