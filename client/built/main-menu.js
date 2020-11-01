@@ -254,9 +254,14 @@ function connect() {
     client.joinOrCreate('my_room').then((room) => {
         console.log(room.sessionId, "joined", room.name);
         show(connectedMessage);
+        // console.log(JSON.stringify(room.state));
+        // why is the state empty??
+        room.onStateChange((state) => {
+            console.log(state.mapJSON);
+        });
     }).catch(error => {
         show(connectionFailedMessage);
-        // console.log("JOIN ERROR", error);
+        console.log("JOIN ERROR", error);
     });
 }
 function main() {
