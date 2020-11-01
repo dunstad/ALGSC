@@ -4,10 +4,41 @@ export type Point3 = {
   z: number,
 }
 
-export class Tile {
+export class TileType {
+  solid: boolean;
+  transparent: boolean;
+  isPlayer?: boolean;
+}
+
+export class Tile extends TileType {
   point: Point3;
   id: number;
-  label: string;
-  walkable: boolean;
-  transparent: boolean;
 }
+
+type TileTypes = {
+  [key: string]: TileType;
+}
+
+export let tileTypes: TileTypes = {
+  'air': {
+    solid: false,
+    transparent: true,
+  },
+  'rock': {
+    solid: true,
+    transparent: false,
+  },
+  'window': {
+    solid: true,
+    transparent: true,
+  },
+  'player': {
+    solid: true,
+    transparent: true,
+    isPlayer: true,
+  },
+  'bush': {
+    solid: false,
+    transparent: false,
+  },
+};

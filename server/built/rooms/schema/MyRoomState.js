@@ -9,13 +9,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.MyRoomState = void 0;
 const schema_1 = require("@colyseus/schema");
 const GameMap_1 = require("../GameMap");
+const Tile_1 = require("../Tile");
 class MyRoomState extends schema_1.Schema {
     constructor() {
         super();
         this.map = new GameMap_1.GameMap();
+        let rock = Object.assign(Object.assign({}, Tile_1.tileTypes.rock), { point: { x: -2, y: 0, z: 0 }, id: 0 });
+        this.map.set(rock.point, rock);
+        this.mapJSON = JSON.stringify(this.map);
     }
 }
 __decorate([
     schema_1.type('string')
-], MyRoomState.prototype, "map", void 0);
+], MyRoomState.prototype, "mapJSON", void 0);
 exports.MyRoomState = MyRoomState;
