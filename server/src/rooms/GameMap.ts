@@ -35,6 +35,7 @@ export class GameMap {
     if (!this.map[x]) {this.map[x] = {};}
     if (!this.map[x][y]) {this.map[x][y] = {};}
     this.map[x][y][z] = tile;
+    tile.point = point;
     return tile;
   }
 

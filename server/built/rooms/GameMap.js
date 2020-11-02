@@ -38,6 +38,7 @@ class GameMap {
             this.map[x][y] = {};
         }
         this.map[x][y][z] = tile;
+        tile.point = point;
         return tile;
     }
     /**

@@ -7,11 +7,10 @@ export class MyRoom extends Room<MyRoomState> {
   onCreate (options) {
     this.setState(new MyRoomState());
 
-    this.onMessage("type", (client, message) => {
-      //
-      // handle "type" message.
-      //
-    });
+    this.onMessage("move", (client, data) => {
+      console.log("room received message from", client.sessionId, ":", data);
+      this.state.movePlayer(client.sessionId, data);
+  });
 
   }
 

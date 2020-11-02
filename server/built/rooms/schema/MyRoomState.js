@@ -31,6 +31,27 @@ class MyRoomState extends schema_1.Schema {
         delete this.players[sessionId];
         this.mapJSON = JSON.stringify(this.map);
     }
+    movePlayer(sessionId, movement) {
+        let playerPoint = this.players[sessionId];
+        let air = Object.assign(Object.assign({}, Tile_1.tileTypes.air), { point: Object.assign({}, playerPoint), id: 'test id?' });
+        let player = this.map.get(playerPoint);
+        this.map.set(playerPoint, air);
+        // todo: collision
+        if (movement.x) {
+            this.players[sessionId].x += movement.x;
+            this.map.set(Object.assign(Object.assign({}, playerPoint), { x: playerPoint.x + 1 }), player);
+        }
+        else if (movement.y) {
+            this.players[sessionId].y += movement.y;
+            this.map.set(Object.assign(Object.assign({}, playerPoint), { y: playerPoint.y + 1 }), player);
+        }
+        else if (movement.z) {
+            this.players[sessionId].z += movement.z;
+            this.map.set(Object.assign(Object.assign({}, playerPoint), { z: playerPoint.z + 1 }), player);
+        }
+        this.players[sessionId] = player.point;
+        this.mapJSON = JSON.stringify(this.map);
+    }
 }
 __decorate([
     schema_1.type('string')

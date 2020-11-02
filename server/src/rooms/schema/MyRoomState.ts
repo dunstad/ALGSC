@@ -44,12 +44,27 @@ export class MyRoomState extends Schema {
     this.mapJSON = JSON.stringify(this.map);
   }
 
-  // movePlayer (sessionId: string, movement: any) {
-  //     if (movement.x) {
-  //         this.players.get(sessionId).x += movement.x * 10;
-
-  //     } else if (movement.y) {
-  //         this.players.get(sessionId).y += movement.y * 10;
-  //     }
-  // }
+  movePlayer (sessionId: string, movement: any) {
+    let playerPoint = this.players[sessionId];
+    let air: Tile = {
+      ...tileTypes.air,
+      point: {...playerPoint},
+      id: 'test id?',
+    }
+    let player: Tile = this.map.get(playerPoint) as Tile;
+    this.map.set(playerPoint, air);
+    // todo: collision
+    if (movement.x) {
+        this.players[sessionId].x += movement.x;
+        this.map.set({...playerPoint, x: playerPoint.x + 1}, player);
+    } else if (movement.y) {
+        this.players[sessionId].y += movement.y;
+        this.map.set({...playerPoint, y: playerPoint.y + 1}, player);
+    } else if (movement.z) {
+        this.players[sessionId].z += movement.z;
+        this.map.set({...playerPoint, z: playerPoint.z + 1}, player);
+    }
+    this.players[sessionId] = player.point;
+    this.mapJSON = JSON.stringify(this.map);
+  }
 }

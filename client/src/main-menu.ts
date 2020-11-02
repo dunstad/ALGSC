@@ -251,6 +251,12 @@ let connectedMessage: Widgets.BoxElement = blessed.box({
   content: ' Connected! ',
 });
 connectedMessage.key(backKeys, ()=>{show(multiplayerMenu);});
+connectedMessage.key('w', ()=>{ROOM.send('move', {y: 1});});
+connectedMessage.key('a', ()=>{ROOM.send('move', {x: -1});});
+connectedMessage.key('s', ()=>{ROOM.send('move', {y: -1});});
+connectedMessage.key('d', ()=>{ROOM.send('move', {x: 1});});
+connectedMessage.key('f', ()=>{ROOM.send('move', {z: -1});});
+connectedMessage.key('r', ()=>{ROOM.send('move', {z: 1});});
 
 let connectionFailedMessage: Widgets.BoxElement = blessed.box({
   style: {
@@ -294,6 +300,7 @@ let portInput: Widgets.TextboxElement = blessed.textbox({
 highlightOnFocus(portInput);
 portInput.key(['enter'], connect);
 
+let ROOM;
 function connect() {
   show(connectingMessage);
 
@@ -310,7 +317,9 @@ function connect() {
     room.onStateChange((state) => {
       console.log("the room state has been updated:", state.mapJSON);
     });
-    
+
+    ROOM = room;
+
   }).catch(error => {
     show(connectionFailedMessage);
     console.log("JOIN ERROR", error);

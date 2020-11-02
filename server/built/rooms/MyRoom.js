@@ -6,10 +6,9 @@ const MyRoomState_1 = require("./schema/MyRoomState");
 class MyRoom extends colyseus_1.Room {
     onCreate(options) {
         this.setState(new MyRoomState_1.MyRoomState());
-        this.onMessage("type", (client, message) => {
-            //
-            // handle "type" message.
-            //
+        this.onMessage("move", (client, data) => {
+            console.log("room received message from", client.sessionId, ":", data);
+            this.state.movePlayer(client.sessionId, data);
         });
     }
     onJoin(client, options) {
