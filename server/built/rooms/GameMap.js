@@ -38,7 +38,7 @@ class GameMap {
             this.map[x][y] = {};
         }
         this.map[x][y][z] = tile;
-        tile.point = point;
+        tile.point = Object.assign({}, point);
         return tile;
     }
     /**

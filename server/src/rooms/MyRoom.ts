@@ -19,7 +19,7 @@ export class MyRoom extends Room<MyRoomState> {
     this.state.createPlayer(client.sessionId);
   }
 
-  onLeave (client, consented) {
+  onLeave (client: Client, consented) {
   }
 
   onDispose() {
