@@ -20,6 +20,8 @@ export class MyRoom extends Room<MyRoomState> {
   }
 
   onLeave (client: Client, consented) {
+    console.log('someone left!')
+    this.state.removePlayer(client.sessionId);
   }
 
   onDispose() {

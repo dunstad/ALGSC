@@ -16,6 +16,8 @@ class MyRoom extends colyseus_1.Room {
         this.state.createPlayer(client.sessionId);
     }
     onLeave(client, consented) {
+        console.log('someone left!');
+        this.state.removePlayer(client.sessionId);
     }
     onDispose() {
     }
