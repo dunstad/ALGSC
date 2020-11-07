@@ -22,9 +22,6 @@ let menuStyle = {
         fg: colors_1.colors.selectedColor,
         bg: colors_1.colors.backgroundColor,
     },
-    keyable: {
-        fg: colors_1.colors.selectedColor,
-    }
 };
 let stealth = settings_1.settings.saturation < 35 ? 'stealth_' : '';
 let image = blessed.image({

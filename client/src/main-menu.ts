@@ -24,9 +24,6 @@ let menuStyle = {
     fg: colors.selectedColor,
     bg: colors.backgroundColor,
   },
-  keyable: {
-    fg: colors.selectedColor,
-  }
 };
 
 let stealth = settings.saturation < 35 ? 'stealth_' : '';
