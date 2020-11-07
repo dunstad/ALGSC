@@ -1,13 +1,21 @@
 ### todo
 
 #### server
-* make the state smaller?
-* allow multiple things in a tile
-  * entities(?), items, walkables
-* make players run into walls
+* send only tile names, fill other info from data folder
+* volume-based collision
+  * Tiles have an array of entities, sorted by size
+  * TIles track their currently filled volume
 
 #### client
-* make some kind of error log
+* dynamic UI size
+* configurable colors
+* configurable key bindings
+  * move key handlers to separate file
+* log
+* chat
+* in-game menu
+* inventory
+* inspect mode
 * render the state
-* data files to interpret the state?
+* data folder for tile information
 * disconnect on quitting game screen, not whole client
