@@ -3,26 +3,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 let blessed = require('neo-blessed');
 const Colyseus = require("colyseus.js");
 const fs = require("fs");
-const colors_1 = require("./colors");
 const settings_1 = require("./settings");
+const ui_1 = require("./ui");
 let blessedScreen = blessed.screen({
     smartCSR: true,
     terminal: 'xterm-256color',
     extended: true,
 });
 let currentMenu;
-let menuStyle = {
-    fg: colors_1.colors.uiColor,
-    bg: colors_1.colors.backgroundColor,
-    border: {
-        fg: colors_1.colors.uiColor,
-        bg: colors_1.colors.backgroundColor,
-    },
-    selected: {
-        fg: colors_1.colors.selectedColor,
-        bg: colors_1.colors.backgroundColor,
-    },
-};
 let stealth = settings_1.settings.saturation < 35 ? 'stealth_' : '';
 let image = blessed.image({
     parent: blessedScreen,
@@ -35,7 +23,7 @@ let image = blessed.image({
     border: {
         type: 'line'
     },
-    style: menuStyle,
+    style: ui_1.menuStyle,
 });
 function quit() {
     return process.exit(0);
@@ -51,21 +39,11 @@ function show(menu) {
 }
 function highlightOnFocus(input) {
     input.on('focus', () => {
-        if (input.style.bar) {
-            input.style.bar.fg = menuStyle.selected.fg;
-        }
-        else {
-            input.style.fg = menuStyle.selected.fg;
-        }
+        input.style = ui_1.selectedStyle;
         blessedScreen.render();
     });
     input.on('blur', () => {
-        if (input.style.bar) {
-            input.style.bar.fg = menuStyle.fg;
-        }
-        else {
-            input.style.fg = menuStyle.fg;
-        }
+        input.style = ui_1.menuStyle;
         blessedScreen.render();
     });
 }
@@ -103,7 +81,7 @@ let mainMenu = blessed.list({
     border: {
         type: 'line'
     },
-    style: menuStyle,
+    style: ui_1.menuStyle,
 });
 mainMenu.on('select', (item, index) => { mainMenuItems[index].action(); });
 // Quit on Escape, q, or Control-C.
@@ -115,7 +93,7 @@ let settingsMenu = blessed.form({
     top: 'center',
     width: '50%',
     height: 6,
-    style: menuStyle,
+    style: ui_1.menuStyle,
     border: {
         type: 'line'
     },
@@ -144,7 +122,7 @@ settingsMenu.key(backKeys, quitSettings);
 var check = blessed.checkbox({
     parent: settingsMenu,
     keys: true,
-    style: Object.assign({}, menuStyle),
+    style: ui_1.menuStyle,
     width: '50%',
     height: 1,
     left: 10,
@@ -156,10 +134,7 @@ highlightOnFocus(check);
 let progressOptions = {
     parent: settingsMenu,
     keys: true,
-    style: Object.assign(Object.assign({}, menuStyle), { bar: {
-            fg: colors_1.colors.uiColor,
-            bg: colors_1.colors.backgroundColor,
-        } }),
+    style: ui_1.menuStyle,
     ch: ':',
     width: '50%',
     height: 1,
@@ -178,7 +153,7 @@ let multiplayerMenu = blessed.form({
     top: 'center',
     width: '50%',
     height: 4,
-    style: menuStyle,
+    style: ui_1.menuStyle,
     border: {
         type: 'line'
     },
@@ -186,7 +161,7 @@ let multiplayerMenu = blessed.form({
 });
 multiplayerMenu.key(backKeys, () => { show(mainMenu); });
 let connectingMessage = blessed.box({
-    style: menuStyle,
+    style: ui_1.menuStyle,
     border: 'line',
     width: 'shrink',
     height: 'shrink',
@@ -198,7 +173,7 @@ let connectingMessage = blessed.box({
 });
 connectingMessage.key(backKeys, () => { show(multiplayerMenu); });
 let connectedMessage = blessed.box({
-    style: menuStyle,
+    style: ui_1.menuStyle,
     border: 'line',
     width: 'shrink',
     height: 'shrink',
@@ -216,7 +191,7 @@ connectedMessage.key('d', () => { ROOM.send('move', { x: 1 }); });
 connectedMessage.key('f', () => { ROOM.send('move', { z: -1 }); });
 connectedMessage.key('r', () => { ROOM.send('move', { z: 1 }); });
 let connectionFailedMessage = blessed.box({
-    style: Object.assign(Object.assign({}, menuStyle), { fg: colors_1.colors.errorColor }),
+    style: ui_1.errorStyle,
     border: 'line',
     width: 'shrink',
     height: 'shrink',
@@ -230,7 +205,7 @@ connectionFailedMessage.key(backKeys, () => { show(multiplayerMenu); });
 let ipAddressInput = blessed.textbox({
     parent: multiplayerMenu,
     inputOnFocus: true,
-    style: Object.assign({}, menuStyle),
+    style: ui_1.menuStyle,
     width: '50%',
     height: 1,
     left: 6,
@@ -242,7 +217,7 @@ ipAddressInput.key(['enter'], connect);
 let portInput = blessed.textbox({
     parent: multiplayerMenu,
     inputOnFocus: true,
-    style: Object.assign({}, menuStyle),
+    style: ui_1.menuStyle,
     width: '50%',
     height: 1,
     left: 6,

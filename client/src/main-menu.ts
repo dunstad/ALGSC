@@ -4,6 +4,7 @@ import Colyseus = require("colyseus.js");
 import fs = require('fs');
 import {colors} from './colors';
 import {settings, Settings} from './settings'
+import {errorStyle, menuStyle, selectedStyle} from './ui'
 
 let blessedScreen: Widgets.Screen = blessed.screen({
   smartCSR: true,
@@ -12,19 +13,6 @@ let blessedScreen: Widgets.Screen = blessed.screen({
 });
 
 let currentMenu: Widgets.BoxElement;
-
-let menuStyle = {
-  fg: colors.uiColor,
-  bg: colors.backgroundColor,
-  border: {
-    fg: colors.uiColor,
-    bg: colors.backgroundColor,
-  },
-  selected: {
-    fg: colors.selectedColor,
-    bg: colors.backgroundColor,
-  },
-};
 
 let stealth = settings.saturation < 35 ? 'stealth_' : '';
 
@@ -56,21 +44,11 @@ function show(menu: Widgets.BoxElement) {
 
 function highlightOnFocus(input: Widgets.InputElement) {
   input.on('focus', ()=>{
-    if (input.style.bar) {
-      input.style.bar.fg = menuStyle.selected.fg;
-    }
-    else {
-      input.style.fg = menuStyle.selected.fg;
-    }
+    input.style = selectedStyle;
     blessedScreen.render();
   });
   input.on('blur', ()=>{
-    if (input.style.bar) {
-      input.style.bar.fg = menuStyle.fg;
-    }
-    else {
-      input.style.fg = menuStyle.fg;
-    }
+    input.style = menuStyle;
     blessedScreen.render();
   });
 }
@@ -164,7 +142,7 @@ settingsMenu.key(backKeys, quitSettings);
 var check: Widgets.CheckboxElement = blessed.checkbox({
   parent: settingsMenu,
   keys: true,
-  style: {...menuStyle},
+  style: menuStyle,
   width: '50%',
   height: 1,
   left: 10,
@@ -177,13 +155,7 @@ highlightOnFocus(check);
 let progressOptions: Widgets.ProgressBarOptions = {
   parent: settingsMenu,
   keys: true,
-  style: {
-    ...menuStyle,
-    bar: {
-      fg: colors.uiColor,
-      bg: colors.backgroundColor,
-    }
-  },
+  style: menuStyle,
   ch: ':',
   width: '50%',
   height: 1,
@@ -256,10 +228,7 @@ connectedMessage.key('f', ()=>{ROOM.send('move', {z: -1});});
 connectedMessage.key('r', ()=>{ROOM.send('move', {z: 1});});
 
 let connectionFailedMessage: Widgets.BoxElement = blessed.box({
-  style: {
-    ...menuStyle,
-    fg: colors.errorColor,
-  },
+  style: errorStyle,
   border: 'line',
   width: 'shrink',
   height: 'shrink',
@@ -274,7 +243,7 @@ connectionFailedMessage.key(backKeys, ()=>{show(multiplayerMenu);});
 let ipAddressInput: Widgets.TextboxElement = blessed.textbox({
   parent: multiplayerMenu,
   inputOnFocus: true,
-  style: {...menuStyle},
+  style: menuStyle,
   width: '50%',
   height: 1,
   left: 6,
@@ -287,7 +256,7 @@ ipAddressInput.key(['enter'], connect);
 let portInput: Widgets.TextboxElement = blessed.textbox({
   parent: multiplayerMenu,
   inputOnFocus: true,
-  style: {...menuStyle},
+  style: menuStyle,
   width: '50%',
   height: 1,
   left: 6,

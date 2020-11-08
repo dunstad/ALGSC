@@ -1,15 +1,46 @@
-// add bar to menustyle
-// add error style
-// add highlight style
+import {colors} from './colors';
+
+export let menuStyle = {
+  fg: colors.uiColor,
+  bg: colors.backgroundColor,
+  border: {
+    fg: colors.uiColor,
+    bg: colors.backgroundColor,
+  },
+  selected: {
+    fg: colors.selectedColor,
+    bg: colors.backgroundColor,
+  },
+  bar: {
+    fg: colors.uiColor,
+    bg: colors.backgroundColor,
+  },
+};
+
+// used because checkboxes and sliders don't work
+// with the css selectors for focus
+export let selectedStyle = {
+  fg: colors.selectedColor,
+  bg: colors.backgroundColor,
+  bar: {
+    fg: colors.selectedColor,
+    bg: colors.backgroundColor,
+  },
+};
+
+export let errorStyle = {
+  ...menuStyle,
+  fg: colors.errorColor,
+};
+
 /*
-top: 'center',
-left: 'center',
 border: {
   type: 'line'
 },
-style: menuStyle,
 width: '50%',
 tags: true,
+top: 'center',
+left: 'center',
 
 // input
 keys: true,
