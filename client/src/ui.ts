@@ -1,4 +1,4 @@
-import { widget, Widgets } from 'blessed';
+import { line, widget, Widgets } from 'blessed';
 import {colors} from './colors';
 
 export let menuStyle = {
@@ -23,11 +23,23 @@ export let menuStyle = {
 export let selectedStyle = {
   fg: colors.selectedColor,
   bg: colors.backgroundColor,
+  border: {
+    fg: colors.selectedColor,
+    bg: colors.selectedBackgroundColor,
+  },
   bar: {
     fg: colors.selectedColor,
     bg: colors.backgroundColor,
   },
 };
+
+export let unfocusedStyle = {
+  ...menuStyle,
+  border: {
+    fg: colors.backgroundColor,
+    bg: colors.backgroundColor,
+  },
+}
 
 export let errorStyle = {
   ...menuStyle,
@@ -54,22 +66,24 @@ export let messageBoxOptions: Widgets.BoxOptions = {
 }
 
 export let inputOptions: Widgets.InputOptions = {
-  style: menuStyle,
+  style: unfocusedStyle,
   width: '50%',
-  height: 1,
+  height: 3,
   keys: true,
+  border: {type: 'line'},
 };
 
-// InputOptions and PRogressBarOptions have different types
+// InputOptions and ProgressBarOptions have different types
 // for keys, so I had to copy all this >.>
 // could probably handle it w/ and interface if needed
 export let progressOptions: Widgets.ProgressBarOptions = {
-  style: menuStyle,
+  style: unfocusedStyle,
   width: '50%',
-  height: 1,
+  height: 3,
   keys: true,
   ch: ':',
   filled: 50,
+  border: {type: 'line'},
 };
 
 export let textboxOptions: Widgets.TextboxOptions = {

@@ -3,7 +3,7 @@ import { Widgets } from "blessed";
 import Colyseus = require("colyseus.js");
 import fs = require('fs');
 import {settings, Settings} from './settings'
-import {centeredMenuOptions, progressOptions, errorStyle, inputOptions, menuStyle, messageBoxOptions, selectedStyle, textboxOptions} from './ui'
+import {centeredMenuOptions, progressOptions, errorStyle, inputOptions, menuStyle, messageBoxOptions, selectedStyle, textboxOptions, unfocusedStyle} from './ui'
 
 let blessedScreen: Widgets.Screen = blessed.screen({
   smartCSR: true,
@@ -42,7 +42,7 @@ function highlightOnFocus(input: Widgets.InputElement) {
     blessedScreen.render();
   });
   input.on('blur', ()=>{
-    input.style = menuStyle;
+    input.style = unfocusedStyle;
     blessedScreen.render();
   });
 }
@@ -92,7 +92,7 @@ mainMenu.key(backKeys, quit);
 let settingsMenu: Widgets.FormElement<Widgets.FormOptions> = blessed.form({
   ...centeredMenuOptions,
   content: 'check\nslider\nsaturation ',
-  height: 6,
+  height: 11,
 });
 
 interface ValuedInput extends Widgets.Node {
@@ -131,7 +131,7 @@ highlightOnFocus(check);
 let progress: Widgets.ProgressBarElement = blessed.progressbar({
   ...progressOptions,
   name: 'slider',
-  top: 1,
+  top: 3,
   left: 10,
   parent: settingsMenu,
 });
@@ -141,7 +141,7 @@ highlightOnFocus(progress);
 let saturation: Widgets.ProgressBarElement = blessed.progressbar({
   ...progressOptions,
   name: 'saturation',
-  top: 2,
+  top: 6,
   left: 10,
   parent: settingsMenu,
 });
@@ -150,7 +150,7 @@ highlightOnFocus(saturation);
 
 let multiplayerMenu: Widgets.FormElement<Widgets.FormOptions> = blessed.form({
   ...centeredMenuOptions,
-  height: 4,
+  height: 8,
   content: 'IP: \nPort: ',
 });
 multiplayerMenu.key(backKeys, ()=>{show(mainMenu);});
@@ -197,7 +197,7 @@ let portInput: Widgets.TextboxElement = blessed.textbox({
   ...textboxOptions,
   parent: multiplayerMenu,
   left: 6,
-  top: 1,
+  top: 3,
   name: 'portInput',
 });
 highlightOnFocus(portInput);

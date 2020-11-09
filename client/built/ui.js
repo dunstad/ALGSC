@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.textboxOptions = exports.progressOptions = exports.inputOptions = exports.messageBoxOptions = exports.centeredMenuOptions = exports.errorStyle = exports.selectedStyle = exports.menuStyle = void 0;
+exports.textboxOptions = exports.progressOptions = exports.inputOptions = exports.messageBoxOptions = exports.centeredMenuOptions = exports.errorStyle = exports.unfocusedStyle = exports.selectedStyle = exports.menuStyle = void 0;
 const colors_1 = require("./colors");
 exports.menuStyle = {
     fg: colors_1.colors.uiColor,
@@ -23,11 +23,19 @@ exports.menuStyle = {
 exports.selectedStyle = {
     fg: colors_1.colors.selectedColor,
     bg: colors_1.colors.backgroundColor,
+    border: {
+        fg: colors_1.colors.selectedColor,
+        bg: colors_1.colors.selectedBackgroundColor,
+    },
     bar: {
         fg: colors_1.colors.selectedColor,
         bg: colors_1.colors.backgroundColor,
     },
 };
+exports.unfocusedStyle = Object.assign(Object.assign({}, exports.menuStyle), { border: {
+        fg: colors_1.colors.backgroundColor,
+        bg: colors_1.colors.backgroundColor,
+    } });
 exports.errorStyle = Object.assign(Object.assign({}, exports.menuStyle), { fg: colors_1.colors.errorColor });
 exports.centeredMenuOptions = {
     style: exports.menuStyle,
@@ -42,21 +50,23 @@ exports.centeredMenuOptions = {
 };
 exports.messageBoxOptions = Object.assign(Object.assign({}, exports.centeredMenuOptions), { width: 'shrink', height: 'shrink', padding: 1 });
 exports.inputOptions = {
-    style: exports.menuStyle,
+    style: exports.unfocusedStyle,
     width: '50%',
-    height: 1,
+    height: 3,
     keys: true,
+    border: { type: 'line' },
 };
-// InputOptions and PRogressBarOptions have different types
+// InputOptions and ProgressBarOptions have different types
 // for keys, so I had to copy all this >.>
 // could probably handle it w/ and interface if needed
 exports.progressOptions = {
-    style: exports.menuStyle,
+    style: exports.unfocusedStyle,
     width: '50%',
-    height: 1,
+    height: 3,
     keys: true,
     ch: ':',
     filled: 50,
+    border: { type: 'line' },
 };
 exports.textboxOptions = Object.assign(Object.assign({}, exports.inputOptions), { inputOnFocus: true });
 /*
