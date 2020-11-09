@@ -1,8 +1,7 @@
 let blessed = require('neo-blessed');
-import { BlessedProgram, widget, Widgets } from "blessed";
+import { Widgets } from "blessed";
 import Colyseus = require("colyseus.js");
 import fs = require('fs');
-import {colors} from './colors';
 import {settings, Settings} from './settings'
 import {centeredMenuOptions, progressOptions, errorStyle, inputOptions, menuStyle, messageBoxOptions, selectedStyle, textboxOptions} from './ui'
 
@@ -17,17 +16,12 @@ let currentMenu: Widgets.BoxElement;
 let stealth = settings.saturation < 35 ? 'stealth_' : '';
 
 let image: Widgets.ImageElement = blessed.image({
+  ...centeredMenuOptions,
+  style: menuStyle,
   parent: blessedScreen,
   file: `./assets/${stealth}title.png`,
-  top: 'center',
-  left: 'center',
   height: Math.min(blessedScreen.height as number, 40),
   width: Math.min(blessedScreen.width as number, 83 * 2),
-  tags: true,
-  border: {
-    type: 'line'
-  },
-  style: menuStyle,
 });
 
 function quit() {

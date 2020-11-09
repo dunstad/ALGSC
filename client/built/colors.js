@@ -14,9 +14,18 @@ function applySaturation(color) {
     }
     return result.hex();
 }
+let backgroundColor = '#202330';
+let uiColor = 'cyan';
+let uiBackgroundColor = chroma.mix(uiColor, backgroundColor, .9).hex();
+let darkUiColor = chroma.mix(uiColor, backgroundColor, .75).hex();
+let darkUiBackgroundColor = chroma.mix(darkUiColor, backgroundColor, .9).hex();
+let selectedColor = 'hotpink';
+let selectedBackgroundColor = chroma.mix(selectedColor, backgroundColor, .9).hex();
 exports.colors = {
-    backgroundColor: applySaturation('#202330'),
-    uiColor: applySaturation('cyan'),
-    selectedColor: applySaturation('yellow'),
+    backgroundColor: applySaturation(backgroundColor),
+    uiColor: applySaturation(darkUiColor),
+    uiBackgroundColor: applySaturation(darkUiBackgroundColor),
+    selectedColor: applySaturation(selectedColor),
+    selectedBackgroundColor: applySaturation(selectedBackgroundColor),
     errorColor: applySaturation('red'),
 };

@@ -12,19 +12,7 @@ let blessedScreen = blessed.screen({
 });
 let currentMenu;
 let stealth = settings_1.settings.saturation < 35 ? 'stealth_' : '';
-let image = blessed.image({
-    parent: blessedScreen,
-    file: `./assets/${stealth}title.png`,
-    top: 'center',
-    left: 'center',
-    height: Math.min(blessedScreen.height, 40),
-    width: Math.min(blessedScreen.width, 83 * 2),
-    tags: true,
-    border: {
-        type: 'line'
-    },
-    style: ui_1.menuStyle,
-});
+let image = blessed.image(Object.assign(Object.assign({}, ui_1.centeredMenuOptions), { style: ui_1.menuStyle, parent: blessedScreen, file: `./assets/${stealth}title.png`, height: Math.min(blessedScreen.height, 40), width: Math.min(blessedScreen.width, 83 * 2) }));
 function quit() {
     return process.exit(0);
 }

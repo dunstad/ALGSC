@@ -6,7 +6,7 @@ export let menuStyle = {
   bg: colors.backgroundColor,
   border: {
     fg: colors.uiColor,
-    bg: colors.backgroundColor,
+    bg: colors.uiBackgroundColor,
   },
   selected: {
     fg: colors.selectedColor,
