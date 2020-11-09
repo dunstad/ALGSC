@@ -4,7 +4,7 @@ import Colyseus = require("colyseus.js");
 import fs = require('fs');
 import {colors} from './colors';
 import {settings, Settings} from './settings'
-import {errorStyle, menuStyle, selectedStyle} from './ui'
+import {centeredMenuOptions, progressOptions, errorStyle, inputOptions, menuStyle, messageBoxOptions, selectedStyle, textboxOptions} from './ui'
 
 let blessedScreen: Widgets.Screen = blessed.screen({
   smartCSR: true,
@@ -85,17 +85,9 @@ let mainMenuItems: MenuItems = [
 
 // Create a box perfectly centered horizontally and vertically.
 let mainMenu: Widgets.ListElement = blessed.list({
-  top: 'center',
-  left: 'center',
-  width: '50%',
+  ...centeredMenuOptions,
   height: 6,
   items: mainMenuItems.map((o)=>{return `{center}${o.name}{/center}`;}),
-  keys: true,
-  tags: true,
-  border: {
-    type: 'line'
-  },
-  style: menuStyle,
 });
 mainMenu.on('select', (item, index: number)=>{mainMenuItems[index].action();});
 
@@ -104,16 +96,9 @@ let backKeys: Array<string> = ['escape', 'q', 'C-c'];
 mainMenu.key(backKeys, quit);
 
 let settingsMenu: Widgets.FormElement<Widgets.FormOptions> = blessed.form({
-  keys: true,
-  left: 'center',
-  top: 'center',
-  width: '50%',
-  height: 6,
-  style: menuStyle,
-  border: {
-    type: 'line'
-  },
+  ...centeredMenuOptions,
   content: 'check\nslider\nsaturation ',
+  height: 6,
 });
 
 interface ValuedInput extends Widgets.Node {
@@ -140,11 +125,8 @@ function quitSettings() {
 settingsMenu.key(backKeys, quitSettings);
 
 var check: Widgets.CheckboxElement = blessed.checkbox({
+  ...inputOptions,
   parent: settingsMenu,
-  keys: true,
-  style: menuStyle,
-  width: '50%',
-  height: 1,
   left: 10,
   top: 0,
   name: 'check',
@@ -152,22 +134,12 @@ var check: Widgets.CheckboxElement = blessed.checkbox({
 check.key(backKeys, quitSettings);
 highlightOnFocus(check);
 
-let progressOptions: Widgets.ProgressBarOptions = {
-  parent: settingsMenu,
-  keys: true,
-  style: menuStyle,
-  ch: ':',
-  width: '50%',
-  height: 1,
-  left: 10,
-  filled: 50,
-}
-
 let progress: Widgets.ProgressBarElement = blessed.progressbar({
   ...progressOptions,
   name: 'slider',
   top: 1,
-  style: {bar: {...progressOptions.style.bar}},
+  left: 10,
+  parent: settingsMenu,
 });
 progress.key(backKeys, quitSettings);
 highlightOnFocus(progress);
@@ -176,46 +148,28 @@ let saturation: Widgets.ProgressBarElement = blessed.progressbar({
   ...progressOptions,
   name: 'saturation',
   top: 2,
-  style: {bar: {...progressOptions.style.bar}},
+  left: 10,
+  parent: settingsMenu,
 });
 saturation.key(backKeys, quitSettings);
 highlightOnFocus(saturation);
 
 let multiplayerMenu: Widgets.FormElement<Widgets.FormOptions> = blessed.form({
-  keys: true,
-  left: 'center',
-  top: 'center',
-  width: '50%',
+  ...centeredMenuOptions,
   height: 4,
-  style: menuStyle,
-  border: {
-    type: 'line'
-  },
   content: 'IP: \nPort: ',
 });
 multiplayerMenu.key(backKeys, ()=>{show(mainMenu);});
 
 let connectingMessage: Widgets.BoxElement = blessed.box({
-  style: menuStyle,
-  border: 'line',
-  width: 'shrink',
-  height: 'shrink',
-  left: 'center',
-  top: 'center',
-  padding: 1,
+  ...messageBoxOptions,
   name: 'connectingMessage',
   content: ' Connecting... ',
 });
 connectingMessage.key(backKeys, ()=>{show(multiplayerMenu);});
 
 let connectedMessage: Widgets.BoxElement = blessed.box({
-  style: menuStyle,
-  border: 'line',
-  width: 'shrink',
-  height: 'shrink',
-  left: 'center',
-  top: 'center',
-  padding: 1,
+  ...messageBoxOptions,
   name: 'connectedMessage',
   content: ' Connected! ',
 });
@@ -228,24 +182,16 @@ connectedMessage.key('f', ()=>{ROOM.send('move', {z: -1});});
 connectedMessage.key('r', ()=>{ROOM.send('move', {z: 1});});
 
 let connectionFailedMessage: Widgets.BoxElement = blessed.box({
+  ...messageBoxOptions,
   style: errorStyle,
-  border: 'line',
-  width: 'shrink',
-  height: 'shrink',
-  left: 'center',
-  top: 'center',
-  padding: 1,
   name: 'connectionFailedMessage',
   content: ' Connection Failed! ',
 });
 connectionFailedMessage.key(backKeys, ()=>{show(multiplayerMenu);});
 
 let ipAddressInput: Widgets.TextboxElement = blessed.textbox({
+  ...textboxOptions,
   parent: multiplayerMenu,
-  inputOnFocus: true,
-  style: menuStyle,
-  width: '50%',
-  height: 1,
   left: 6,
   top: 0,
   name: 'ipAddressInput',
@@ -254,11 +200,8 @@ highlightOnFocus(ipAddressInput);
 ipAddressInput.key(['enter'], connect);
 
 let portInput: Widgets.TextboxElement = blessed.textbox({
+  ...textboxOptions,
   parent: multiplayerMenu,
-  inputOnFocus: true,
-  style: menuStyle,
-  width: '50%',
-  height: 1,
   left: 6,
   top: 1,
   name: 'portInput',

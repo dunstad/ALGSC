@@ -70,35 +70,12 @@ let mainMenuItems = [
     },
 ];
 // Create a box perfectly centered horizontally and vertically.
-let mainMenu = blessed.list({
-    top: 'center',
-    left: 'center',
-    width: '50%',
-    height: 6,
-    items: mainMenuItems.map((o) => { return `{center}${o.name}{/center}`; }),
-    keys: true,
-    tags: true,
-    border: {
-        type: 'line'
-    },
-    style: ui_1.menuStyle,
-});
+let mainMenu = blessed.list(Object.assign(Object.assign({}, ui_1.centeredMenuOptions), { height: 6, items: mainMenuItems.map((o) => { return `{center}${o.name}{/center}`; }) }));
 mainMenu.on('select', (item, index) => { mainMenuItems[index].action(); });
 // Quit on Escape, q, or Control-C.
 let backKeys = ['escape', 'q', 'C-c'];
 mainMenu.key(backKeys, quit);
-let settingsMenu = blessed.form({
-    keys: true,
-    left: 'center',
-    top: 'center',
-    width: '50%',
-    height: 6,
-    style: ui_1.menuStyle,
-    border: {
-        type: 'line'
-    },
-    content: 'check\nslider\nsaturation ',
-});
+let settingsMenu = blessed.form(Object.assign(Object.assign({}, ui_1.centeredMenuOptions), { content: 'check\nslider\nsaturation ', height: 6 }));
 function loadSettings(settings) {
     if (settings.check) {
         check.check();
@@ -119,70 +96,20 @@ function quitSettings() {
     show(mainMenu);
 }
 settingsMenu.key(backKeys, quitSettings);
-var check = blessed.checkbox({
-    parent: settingsMenu,
-    keys: true,
-    style: ui_1.menuStyle,
-    width: '50%',
-    height: 1,
-    left: 10,
-    top: 0,
-    name: 'check',
-});
+var check = blessed.checkbox(Object.assign(Object.assign({}, ui_1.inputOptions), { parent: settingsMenu, left: 10, top: 0, name: 'check' }));
 check.key(backKeys, quitSettings);
 highlightOnFocus(check);
-let progressOptions = {
-    parent: settingsMenu,
-    keys: true,
-    style: ui_1.menuStyle,
-    ch: ':',
-    width: '50%',
-    height: 1,
-    left: 10,
-    filled: 50,
-};
-let progress = blessed.progressbar(Object.assign(Object.assign({}, progressOptions), { name: 'slider', top: 1, style: { bar: Object.assign({}, progressOptions.style.bar) } }));
+let progress = blessed.progressbar(Object.assign(Object.assign({}, ui_1.progressOptions), { name: 'slider', top: 1, left: 10, parent: settingsMenu }));
 progress.key(backKeys, quitSettings);
 highlightOnFocus(progress);
-let saturation = blessed.progressbar(Object.assign(Object.assign({}, progressOptions), { name: 'saturation', top: 2, style: { bar: Object.assign({}, progressOptions.style.bar) } }));
+let saturation = blessed.progressbar(Object.assign(Object.assign({}, ui_1.progressOptions), { name: 'saturation', top: 2, left: 10, parent: settingsMenu }));
 saturation.key(backKeys, quitSettings);
 highlightOnFocus(saturation);
-let multiplayerMenu = blessed.form({
-    keys: true,
-    left: 'center',
-    top: 'center',
-    width: '50%',
-    height: 4,
-    style: ui_1.menuStyle,
-    border: {
-        type: 'line'
-    },
-    content: 'IP: \nPort: ',
-});
+let multiplayerMenu = blessed.form(Object.assign(Object.assign({}, ui_1.centeredMenuOptions), { height: 4, content: 'IP: \nPort: ' }));
 multiplayerMenu.key(backKeys, () => { show(mainMenu); });
-let connectingMessage = blessed.box({
-    style: ui_1.menuStyle,
-    border: 'line',
-    width: 'shrink',
-    height: 'shrink',
-    left: 'center',
-    top: 'center',
-    padding: 1,
-    name: 'connectingMessage',
-    content: ' Connecting... ',
-});
+let connectingMessage = blessed.box(Object.assign(Object.assign({}, ui_1.messageBoxOptions), { name: 'connectingMessage', content: ' Connecting... ' }));
 connectingMessage.key(backKeys, () => { show(multiplayerMenu); });
-let connectedMessage = blessed.box({
-    style: ui_1.menuStyle,
-    border: 'line',
-    width: 'shrink',
-    height: 'shrink',
-    left: 'center',
-    top: 'center',
-    padding: 1,
-    name: 'connectedMessage',
-    content: ' Connected! ',
-});
+let connectedMessage = blessed.box(Object.assign(Object.assign({}, ui_1.messageBoxOptions), { name: 'connectedMessage', content: ' Connected! ' }));
 connectedMessage.key(backKeys, () => { show(multiplayerMenu); });
 connectedMessage.key('w', () => { ROOM.send('move', { y: 1 }); });
 connectedMessage.key('a', () => { ROOM.send('move', { x: -1 }); });
@@ -190,40 +117,12 @@ connectedMessage.key('s', () => { ROOM.send('move', { y: -1 }); });
 connectedMessage.key('d', () => { ROOM.send('move', { x: 1 }); });
 connectedMessage.key('f', () => { ROOM.send('move', { z: -1 }); });
 connectedMessage.key('r', () => { ROOM.send('move', { z: 1 }); });
-let connectionFailedMessage = blessed.box({
-    style: ui_1.errorStyle,
-    border: 'line',
-    width: 'shrink',
-    height: 'shrink',
-    left: 'center',
-    top: 'center',
-    padding: 1,
-    name: 'connectionFailedMessage',
-    content: ' Connection Failed! ',
-});
+let connectionFailedMessage = blessed.box(Object.assign(Object.assign({}, ui_1.messageBoxOptions), { style: ui_1.errorStyle, name: 'connectionFailedMessage', content: ' Connection Failed! ' }));
 connectionFailedMessage.key(backKeys, () => { show(multiplayerMenu); });
-let ipAddressInput = blessed.textbox({
-    parent: multiplayerMenu,
-    inputOnFocus: true,
-    style: ui_1.menuStyle,
-    width: '50%',
-    height: 1,
-    left: 6,
-    top: 0,
-    name: 'ipAddressInput',
-});
+let ipAddressInput = blessed.textbox(Object.assign(Object.assign({}, ui_1.textboxOptions), { parent: multiplayerMenu, left: 6, top: 0, name: 'ipAddressInput' }));
 highlightOnFocus(ipAddressInput);
 ipAddressInput.key(['enter'], connect);
-let portInput = blessed.textbox({
-    parent: multiplayerMenu,
-    inputOnFocus: true,
-    style: ui_1.menuStyle,
-    width: '50%',
-    height: 1,
-    left: 6,
-    top: 1,
-    name: 'portInput',
-});
+let portInput = blessed.textbox(Object.assign(Object.assign({}, ui_1.textboxOptions), { parent: multiplayerMenu, left: 6, top: 1, name: 'portInput' }));
 highlightOnFocus(portInput);
 portInput.key(['enter'], connect);
 let ROOM;
