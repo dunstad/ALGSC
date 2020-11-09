@@ -7,6 +7,7 @@
   * TIles track their currently filled volume
 
 #### client
+* figure out how to stop blessed from messing up my colors
 * dynamic UI size
 * configurable colors
 * configurable key bindings
