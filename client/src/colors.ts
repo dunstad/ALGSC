@@ -14,17 +14,19 @@ function applySaturation(color: string) {
 }
 
 let backgroundColor = '#202330';
-let uiColor = 'cyan';
+let uiColor = '#00ffff';
 let uiBackgroundColor = chroma.mix(uiColor, backgroundColor, .9).hex()
 let darkUiColor = chroma.mix(uiColor, backgroundColor, .75).hex();
 let darkUiBackgroundColor = chroma.mix(darkUiColor, backgroundColor, .9).hex();
-let selectedColor = 'hotpink';
+let selectedColor = '#ff9dc9';
 let selectedBackgroundColor = chroma.mix(selectedColor, backgroundColor, .9).hex()
 
 export let colors = {
   backgroundColor: applySaturation(backgroundColor),
   uiColor: applySaturation(darkUiColor),
   uiBackgroundColor: applySaturation(darkUiBackgroundColor),
+  importantUiColor: applySaturation(uiColor),
+  importantUiBackgroundColor: applySaturation(uiBackgroundColor),
   selectedColor: applySaturation(selectedColor),
   selectedBackgroundColor: applySaturation(selectedBackgroundColor),
   errorColor: applySaturation('red'),

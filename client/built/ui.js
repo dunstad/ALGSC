@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.textboxOptions = exports.progressOptions = exports.inputOptions = exports.messageBoxOptions = exports.centeredMenuOptions = exports.errorStyle = exports.unfocusedStyle = exports.selectedStyle = exports.menuStyle = void 0;
+exports.textboxOptions = exports.progressOptions = exports.inputOptions = exports.messageBoxOptions = exports.centeredMenuOptions = exports.errorStyle = exports.unfocusedStyle = exports.selectedStyle = exports.importantMenuStyle = exports.menuStyle = void 0;
 const colors_1 = require("./colors");
 exports.menuStyle = {
     fg: colors_1.colors.uiColor,
@@ -18,6 +18,10 @@ exports.menuStyle = {
         bg: colors_1.colors.backgroundColor,
     },
 };
+exports.importantMenuStyle = Object.assign(Object.assign({}, exports.menuStyle), { border: {
+        fg: colors_1.colors.importantUiColor,
+        bg: colors_1.colors.importantUiBackgroundColor,
+    } });
 // used because checkboxes and sliders don't work
 // with the css selectors for focus
 exports.selectedStyle = {
@@ -36,9 +40,9 @@ exports.unfocusedStyle = Object.assign(Object.assign({}, exports.menuStyle), { b
         fg: colors_1.colors.backgroundColor,
         bg: colors_1.colors.backgroundColor,
     } });
-exports.errorStyle = Object.assign(Object.assign({}, exports.menuStyle), { fg: colors_1.colors.errorColor });
+exports.errorStyle = Object.assign(Object.assign({}, exports.importantMenuStyle), { fg: colors_1.colors.errorColor });
 exports.centeredMenuOptions = {
-    style: exports.menuStyle,
+    style: exports.importantMenuStyle,
     border: {
         type: 'line'
     },

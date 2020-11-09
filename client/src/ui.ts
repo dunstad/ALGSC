@@ -18,6 +18,14 @@ export let menuStyle = {
   },
 };
 
+export let importantMenuStyle = {
+  ...menuStyle,
+  border: {
+    fg: colors.importantUiColor,
+    bg: colors.importantUiBackgroundColor,
+  }
+}
+
 // used because checkboxes and sliders don't work
 // with the css selectors for focus
 export let selectedStyle = {
@@ -42,12 +50,12 @@ export let unfocusedStyle = {
 }
 
 export let errorStyle = {
-  ...menuStyle,
+  ...importantMenuStyle,
   fg: colors.errorColor,
 };
 
 export let centeredMenuOptions: Widgets.BoxOptions = {
-  style: menuStyle,
+  style: importantMenuStyle,
   border: {
     type: 'line'
   },
